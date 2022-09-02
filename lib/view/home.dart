@@ -167,19 +167,17 @@ class Home extends StatelessWidget {
                       color: App.field,
                       borderRadius: BorderRadius.circular(5)
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        Text("No Result Found!",
-                            style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: CommonTextStyle.mediumTextStyle
-                            )
-                        ),
-                      ],
-                    ),
-                  )
+                  child: Row(
+                    children: [
+                      SizedBox(width: 10,),
+                      Text("No Result Found!",
+                          style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: CommonTextStyle.mediumTextStyle
+                          )
+                      ),
+                    ],
+                  ),
               ),
               SizedBox(height: 20,),
               TitleAndDescription(
@@ -560,7 +558,7 @@ class Home extends StatelessWidget {
                                   App.lunchURL(context,"https://api.whatsapp.com/send?phone=");
                                 },
                                 child: Container(
-                                    width: 85,
+                                    // width: 85,
                                     decoration: BoxDecoration(
                                         color: App.grey,
                                         borderRadius: BorderRadius.only(
@@ -584,7 +582,7 @@ class Home extends StatelessWidget {
                                   }
                                 },
                                 child: Container(
-                                    width: 85,
+                                    // width: 85,
                                     decoration: BoxDecoration(
                                       color: App.grey,
                                     ),
@@ -604,7 +602,7 @@ class Home extends StatelessWidget {
                                   homeController.selectNavDrawer.value = 0;
                                 },
                                 child: Container(
-                                    width: 85,
+                                    // width: 85,
                                     decoration: BoxDecoration(
                                       color: App.grey,
                                     ),
@@ -623,7 +621,7 @@ class Home extends StatelessWidget {
                                   ///book page
                                 },
                                 child: Container(
-                                    width: 85,
+                                    // width: 85,
                                     decoration: BoxDecoration(
                                         color: App.grey,
                                         borderRadius: BorderRadius.only(
