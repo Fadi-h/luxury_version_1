@@ -385,7 +385,7 @@ class Home extends StatelessWidget {
   }
   products(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width,
+        width: App.getDeviceWidthPercent(92, context),
         child: GridView.builder(
             padding: EdgeInsets.symmetric(vertical: 10),
             itemCount: allCars.data!.cars.length,
@@ -404,9 +404,9 @@ class Home extends StatelessWidget {
                   homeController.selectNavDrawer.value = 0;
                 },
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Container(
-                    width: App.getDeviceWidthPercent(90, context),
+                    width: App.getDeviceWidthPercent(92, context),
                     decoration: BoxDecoration(
                         color: App.lightDarkGrey,
                         borderRadius: BorderRadius.circular(20)
@@ -558,7 +558,7 @@ class Home extends StatelessWidget {
                                   App.lunchURL(context,"https://api.whatsapp.com/send?phone=");
                                 },
                                 child: Container(
-                                    // width: 85,
+                                  width: App.getDeviceWidthPercent(92, context) / 4,
                                     decoration: BoxDecoration(
                                         color: App.grey,
                                         borderRadius: BorderRadius.only(
@@ -566,7 +566,7 @@ class Home extends StatelessWidget {
                                         )
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                                      padding: const EdgeInsets.symmetric(horizontal: 0),
                                       child: ImageAndText(
                                           child1: Icon(Icons.whatsapp,color: Colors.green,size: 14,),
                                           text: "Whatsapp",
@@ -582,12 +582,12 @@ class Home extends StatelessWidget {
                                   }
                                 },
                                 child: Container(
-                                    // width: 85,
+                                    width: App.getDeviceWidthPercent(92, context) / 5,
                                     decoration: BoxDecoration(
                                       color: App.grey,
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                                      padding: const EdgeInsets.symmetric(horizontal: 0),
                                       child: ImageAndText(
                                           child1: Icon(Icons.call,color: Colors.red,size: 14,),
                                           text: "Call",
@@ -602,12 +602,12 @@ class Home extends StatelessWidget {
                                   homeController.selectNavDrawer.value = 0;
                                 },
                                 child: Container(
-                                    // width: 85,
+                                    width: App.getDeviceWidthPercent(92, context) / 5,
                                     decoration: BoxDecoration(
                                       color: App.grey,
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                                      padding: const EdgeInsets.symmetric(horizontal: 0),
                                       child: ImageAndText(
                                           child1: Icon(Icons.info_outline,color: Colors.orange,size: 14,),
                                           text: "Details",
@@ -621,7 +621,7 @@ class Home extends StatelessWidget {
                                   ///book page
                                 },
                                 child: Container(
-                                    // width: 85,
+                                    width: App.getDeviceWidthPercent(92, context) / 4,
                                     decoration: BoxDecoration(
                                         color: App.grey,
                                         borderRadius: BorderRadius.only(
@@ -629,7 +629,7 @@ class Home extends StatelessWidget {
                                         )
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                                      padding: const EdgeInsets.symmetric(horizontal: 0),
                                       child: ImageAndText(
                                           child1: ContainerWithImage(
                                             width: 16,
