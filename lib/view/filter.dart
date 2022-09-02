@@ -248,14 +248,14 @@ class Filter extends StatelessWidget {
             style: CommonTextStyle.textStyleForLargeWhiteBold,
           ),
           Container(
-            width: App.getDeviceWidthPercent(90, context),
+            width: App.getDeviceWidthPercent(95, context),
             child: GridView.builder(
               padding: EdgeInsets.only(top: 20),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   childAspectRatio: 3,
                   mainAxisSpacing: 15,
-                  crossAxisSpacing: 10
+                  crossAxisSpacing: 5
               ),
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
@@ -268,7 +268,7 @@ class Filter extends StatelessWidget {
                         ///select multi items
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        padding: EdgeInsets.symmetric(horizontal: 6),
                         decoration: BoxDecoration(
                           color: App.grey,
                           borderRadius: BorderRadius.circular(25),
