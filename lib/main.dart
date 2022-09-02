@@ -8,7 +8,7 @@ import 'package:luxury_version_1/helper/global.dart';
 import 'package:luxury_version_1/view/introduction.dart';
 
 
-/// new 
+/// new
 void main() {
   runApp( MyApp());
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle());
