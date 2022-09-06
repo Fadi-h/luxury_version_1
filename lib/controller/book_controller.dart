@@ -13,7 +13,10 @@ class BookController extends GetxController {
   RxString range = ''.obs;
   RxString rangeCount = ''.obs;
   RxBool saveDate = false.obs;
-  RxList<String> pickUpTime = [""].obs;
+  var pickUpValidate = true.obs;
+  Rx<String> pickTime ="non".obs;
+  var dropOffValidate = true.obs;
+  Rx<String> dropTime ="non".obs;
 
 
   void onSelectionDateChanges(DateRangePickerSelectionChangedArgs args) {
@@ -34,6 +37,7 @@ class BookController extends GetxController {
     selectRentalModel.value = 0;
     selectedDate.value = '';
     saveDate.value = false;
+    pickTime = "non".obs;
   }
 
 }

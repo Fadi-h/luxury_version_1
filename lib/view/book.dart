@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -331,41 +332,51 @@ class Book extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            width: App.getDeviceWidthPercent(40, context),
-            height: 40,
-            decoration: BoxDecoration(
-                color: App.grey,
-                borderRadius: BorderRadius.circular(15)
-            ),
-            child: Center(
-              child: Text(
-                bookController.saveDate.value ? bookController.range.value :
-                App_Localization.of(context).translate("pickup_time"),
-                style: TextStyle(
-                    color: App.lightGrey,
-                    fontSize: CommonTextStyle.mediumTextStyle
-                ),
+              width: App.getDeviceWidthPercent(40, context),
+              height: 40,
+              decoration: BoxDecoration(
+                  color: App.grey,
+                  border: Border.all(
+                    color: !bookController.pickUpValidate.value && bookController.pickTime.value=="non"? Colors.red : App.grey,
+                  ),
+                  borderRadius: BorderRadius.circular(15)
               ),
-            ),
-          ),
-          Container(
-            width: App.getDeviceWidthPercent(40, context),
-            height: 40,
-            decoration: BoxDecoration(
-                color: App.grey,
-                borderRadius: BorderRadius.circular(15)
-            ),
-
-            // child: Center(
-            //   child: Text(
-            //     bookController.saveDate.value ? bookController.range.value :
-            //     App_Localization.of(context).translate("dropOff_time"),
-            //     style: TextStyle(
-            //         color: App.lightGrey,
-            //         fontSize: CommonTextStyle.mediumTextStyle
-            //     ),
-            //   ),
-            // ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Center(
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton2<String>(
+                      // dropdownColor: App.grey,
+                      isExpanded: true,
+                      hint: Text(App_Localization.of(context).translate("pickup_time"),
+                        style: TextStyle(
+                            color: App.lightGrey,
+                            fontSize: CommonTextStyle.mediumTextStyle,
+                            fontWeight: FontWeight.normal
+                        ),
+                      ),
+                      iconEnabledColor: App.lightGrey,
+                      value: bookController.pickTime.value=="non"? null : bookController.pickTime.value,
+                      items: Global.pickUpTime.map((String value) {
+                        return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value,
+                              style: TextStyle(
+                                  color: App.lightGrey,
+                                  fontSize: CommonTextStyle.smallTextStyle,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                        );
+                      }).toList(),
+                      underline: Container(),
+                      onChanged: (val) {
+                        bookController.pickTime.value=val.toString();
+                      },
+                    ),
+                  ),
+                ),
+              )
           ),
         ],
       ),
