@@ -47,9 +47,7 @@ class CarsByBrand extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // SizedBox(height: MediaQuery.of(context).viewPadding.top,),
-                    _header(context),
-                    SizedBox(height: 20),
+                    SizedBox(height: 90),
                     Container(
                       width: App.getDeviceWidthPercent(90, context),
                       child: Text(
@@ -72,6 +70,7 @@ class CarsByBrand extends StatelessWidget {
                 ),
               ),
             ),
+            _header(context),
           ],
         ),
       )
@@ -81,6 +80,7 @@ class CarsByBrand extends StatelessWidget {
   _header(BuildContext context) {
     return Container(
       width: App.getDeviceWidthPercent(100, context),
+      height: 70,
       decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/images/top-nav.png"),

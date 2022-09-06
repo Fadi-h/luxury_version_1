@@ -53,37 +53,35 @@ class ProductDetails extends StatelessWidget {
             child: CircularProgressIndicator(color: App.orange),
           ),
         ) :
-        Stack(
-          children: [
-            Container(
-              width: App.getDeviceWidthPercent(100, context),
-              height: App.getDeviceHeightPercent(100, context),
-              color: App.darkGrey,
-            ),
-            productDetails(context)
-          ],
+        SafeArea(
+          child: Stack(
+            children: [
+              Container(
+                width: App.getDeviceWidthPercent(100, context),
+                height: App.getDeviceHeightPercent(100, context),
+                color: App.darkGrey,
+              ),
+
+              productDetails(context),
+              header(context),
+            ],
+          ),
         )
     ));
   }
 
   productDetails(BuildContext context) {
-    return SafeArea(
+    return Center(
       child:
-      Column(
-        children: [
-          header(context),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-
-                SizedBox(height: 15),
-                body(context),
-                SizedBox(height: 20),
-                Footer(introductionController: introductionController,desc: Center(),)
-              ],
-            ),
-          ),
-        ],
+      SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 85),
+            body(context),
+            SizedBox(height: 20),
+            Footer(introductionController: introductionController,desc: Center(),)
+          ],
+        ),
       ),
     );
   }
@@ -91,6 +89,7 @@ class ProductDetails extends StatelessWidget {
   header(BuildContext context) {
     return Container(
       width: App.getDeviceWidthPercent(100, context),
+      height: 70,
       decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/images/top-nav.png"),
