@@ -340,7 +340,7 @@ class Book extends StatelessWidget {
             child: Center(
               child: Text(
                 bookController.saveDate.value ? bookController.range.value :
-                App_Localization.of(context).translate("pickup_and_dropOff_date"),
+                App_Localization.of(context).translate("pickup_time"),
                 style: TextStyle(
                     color: App.lightGrey,
                     fontSize: CommonTextStyle.mediumTextStyle
@@ -356,15 +356,41 @@ class Book extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15)
             ),
             child: Center(
-              child: Text(
-                bookController.saveDate.value ? bookController.range.value :
-                App_Localization.of(context).translate("pickup_and_dropOff_date"),
-                style: TextStyle(
-                    color: App.lightGrey,
-                    fontSize: CommonTextStyle.mediumTextStyle
-                ),
+              child: Container(
+                child:  DropdownButton<>(
+                  // Initial Value
+                  value: dropdownvalue,
+
+                  // Down Arrow Icon
+                  icon: const Icon(Icons.keyboard_arrow_down),
+
+                  // Array list of items
+                  items: items.map((String items) {
+                    return DropdownMenuItem(
+                      value: items,
+                      child: Text(items),
+                    );
+                  }).toList(),
+                  // After selecting the desired option,it will
+                  // change button value to selected value
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropdownvalue = newValue!;
+                    });
+                  },
+                ),,
               ),
             ),
+            // child: Center(
+            //   child: Text(
+            //     bookController.saveDate.value ? bookController.range.value :
+            //     App_Localization.of(context).translate("dropOff_time"),
+            //     style: TextStyle(
+            //         color: App.lightGrey,
+            //         fontSize: CommonTextStyle.mediumTextStyle
+            //     ),
+            //   ),
+            // ),
           ),
         ],
       ),
