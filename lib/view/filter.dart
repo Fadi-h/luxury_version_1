@@ -34,6 +34,7 @@ class Filter extends StatelessWidget {
                 color: App.darkGrey,
                 child: Center(
                   child: CircularProgressIndicator(
+
                     color: App.orange,
                   ),
                 ),
