@@ -355,32 +355,7 @@ class Book extends StatelessWidget {
                 color: App.grey,
                 borderRadius: BorderRadius.circular(15)
             ),
-            child: Center(
-              child: Container(
-                child:  DropdownButton<>(
-                  // Initial Value
-                  value: dropdownvalue,
 
-                  // Down Arrow Icon
-                  icon: const Icon(Icons.keyboard_arrow_down),
-
-                  // Array list of items
-                  items: items.map((String items) {
-                    return DropdownMenuItem(
-                      value: items,
-                      child: Text(items),
-                    );
-                  }).toList(),
-                  // After selecting the desired option,it will
-                  // change button value to selected value
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      dropdownvalue = newValue!;
-                    });
-                  },
-                ),,
-              ),
-            ),
             // child: Center(
             //   child: Text(
             //     bookController.saveDate.value ? bookController.range.value :
