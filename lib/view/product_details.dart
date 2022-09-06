@@ -42,6 +42,7 @@ class ProductDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
+        backgroundColor: App.darkGrey,
         key: productDetailsController.key,
         drawer: CustomDrawer(homeController: homeController),
         body: productDetailsController.loading.value ?
