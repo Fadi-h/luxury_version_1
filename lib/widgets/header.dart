@@ -21,6 +21,7 @@ class Header extends StatelessWidget{
   Widget build(BuildContext context) {
     return Container(
       width: App.getDeviceWidthPercent(100, context),
+      height: 70,
       decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/images/top-nav.png"),

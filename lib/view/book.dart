@@ -132,6 +132,7 @@ class Book extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 15),
+        pickUpDropOffTime(context)
       ],
     );
   }
@@ -324,27 +325,49 @@ class Book extends StatelessWidget {
     );
   }
   pickUpDropOffTime(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: App.getDeviceWidthPercent(90, context),
-          height: 50,
-          decoration: BoxDecoration(
-              color: App.grey,
-              borderRadius: BorderRadius.circular(15)
-          ),
-          child: Center(
-            child: Text(
-              bookController.saveDate.value ? bookController.range.value :
-              App_Localization.of(context).translate("pickup_and_dropOff_date"),
-              style: TextStyle(
-                  color: App.lightGrey,
-                  fontSize: CommonTextStyle.mediumTextStyle
+    return Container(
+      width: App.getDeviceWidthPercent(90, context),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            width: App.getDeviceWidthPercent(40, context),
+            height: 40,
+            decoration: BoxDecoration(
+                color: App.grey,
+                borderRadius: BorderRadius.circular(15)
+            ),
+            child: Center(
+              child: Text(
+                bookController.saveDate.value ? bookController.range.value :
+                App_Localization.of(context).translate("pickup_and_dropOff_date"),
+                style: TextStyle(
+                    color: App.lightGrey,
+                    fontSize: CommonTextStyle.mediumTextStyle
+                ),
               ),
             ),
           ),
-        ),
-      ],
+          Container(
+            width: App.getDeviceWidthPercent(40, context),
+            height: 40,
+            decoration: BoxDecoration(
+                color: App.grey,
+                borderRadius: BorderRadius.circular(15)
+            ),
+            child: Center(
+              child: Text(
+                bookController.saveDate.value ? bookController.range.value :
+                App_Localization.of(context).translate("pickup_and_dropOff_date"),
+                style: TextStyle(
+                    color: App.lightGrey,
+                    fontSize: CommonTextStyle.mediumTextStyle
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

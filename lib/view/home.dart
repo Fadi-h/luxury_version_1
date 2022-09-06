@@ -135,37 +135,8 @@ class Home extends StatelessWidget {
         SingleChildScrollView(
           child: Column(
             children: [
-              Header(
-                homeController: homeController,
-                onTap: () {
-                  homeController.key.currentState!.openDrawer();
-                },
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => Filter(),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        const begin = Offset(1.0,0.0);
-                        const end = Offset.zero;
-                        const curve = Curves.easeInOut;
-                        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                        return SlideTransition(
-                          position: animation.drive(tween),
-                          child: child,
-                        );
-                      },
-                    ));
-                  },
-                  child: ContainerWithImage(
-                    width: 30,
-                    height: 30,
-                    image: "assets/icons/filter.svg",
-                    option: 0,
-                    color: Colors.transparent,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
+
+              const SizedBox(height: 85),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(PageRouteBuilder(
