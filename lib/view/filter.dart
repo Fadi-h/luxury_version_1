@@ -27,7 +27,18 @@ class Filter extends StatelessWidget {
                   fit: BoxFit.cover
               )
           ),
-          child: SingleChildScrollView(
+          child: introductionController.loading.value ?
+              Container(
+                width: App.getDeviceWidthPercent(100, context),
+                height: App.getDeviceHeightPercent(100, context),
+                color: App.darkGrey,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: App.orange,
+                  ),
+                ),
+              ) :
+          SingleChildScrollView(
             child: Column(
               children: [
                 ///header
@@ -71,6 +82,12 @@ class Filter extends StatelessWidget {
           GestureDetector(
             onTap: () {
               Get.back();
+              homeController.clearFilter();
+              introductionController.clearFilter();
+              introductionController.homeData!.data!.brands.first.selected.value = true;
+              for(int i=1 ; i< introductionController.homeData!.data!.brands.length;i++){
+                introductionController.homeData!.data!.brands[i].selected.value = false;
+              }
             },
             child: ContainerWithImage(
                 width: 30,
@@ -228,7 +245,7 @@ class Filter extends StatelessWidget {
               alignment: WrapAlignment.spaceBetween,
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 10,
-              runSpacing: 10,
+              runSpacing: 15,
               children: introductionController.homeData!.data!.brands.map((e) =>
                   Container(
                     width: 100,
@@ -240,6 +257,7 @@ class Filter extends StatelessWidget {
                         if(e.id == -1){
                           e.selected.value = true;
                           homeController.selectedBrands.clear();
+
                           for(int i=1 ; i< introductionController.homeData!.data!.brands.length;i++){
                             introductionController.homeData!.data!.brands[i].selected.value = false;
                           }
@@ -266,7 +284,7 @@ class Filter extends StatelessWidget {
                               e.name,textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: CommonTextStyle.smallTextStyle,
-                                  color: Colors.white,
+                                  color: e.selected.value ? App.grey :  Colors.white ,
                                   fontWeight: FontWeight.w500
                               )
                           ),
@@ -316,6 +334,10 @@ class Filter extends StatelessWidget {
                 onPressed: () {
                   homeController.clearFilter();
                   introductionController.clearFilter();
+                  introductionController.homeData!.data!.brands.first.selected.value = true;
+                  for(int i=1 ; i< introductionController.homeData!.data!.brands.length;i++){
+                    introductionController.homeData!.data!.brands[i].selected.value = false;
+                  }
                 },
               ),
             ),
