@@ -32,6 +32,7 @@ class CarsByBrand extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: App.darkGrey,
       body: SafeArea(
         child: Stack(
           children: [
