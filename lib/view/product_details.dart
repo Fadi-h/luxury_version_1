@@ -67,15 +67,22 @@ class ProductDetails extends StatelessWidget {
   }
 
   productDetails(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
+    return SafeArea(
+      child:
+      Column(
         children: [
-          SizedBox(height: MediaQuery.of(context).viewPadding.top,),
           header(context),
-          SizedBox(height: 15),
-          body(context),
-          SizedBox(height: 20),
-          Footer(introductionController: introductionController,desc: Center(),)
+          SingleChildScrollView(
+            child: Column(
+              children: [
+
+                SizedBox(height: 15),
+                body(context),
+                SizedBox(height: 20),
+                Footer(introductionController: introductionController,desc: Center(),)
+              ],
+            ),
+          ),
         ],
       ),
     );
