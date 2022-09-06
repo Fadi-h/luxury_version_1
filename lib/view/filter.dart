@@ -265,7 +265,7 @@ class Filter extends StatelessWidget {
                           child: Text(
                               e.name,textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: smallTextStyle,
+                                  fontSize: CommonTextStyle.smallTextStyle,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500
                               )
