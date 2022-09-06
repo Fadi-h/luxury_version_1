@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:luxury_version_1/app_localization.dart';
+import 'package:luxury_version_1/controller/home_controller.dart';
 import 'package:luxury_version_1/controller/introduction_controller.dart';
+import 'package:luxury_version_1/controller/product_details_controller.dart';
 import 'package:luxury_version_1/helper/app.dart';
 
 class Footer extends StatelessWidget{
 
   final IntroductionController introductionController;
+  final Widget? desc;
 
   Footer({
     required this.introductionController,
+    this.desc
   });
 
+  HomeController homeController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -19,24 +26,21 @@ class Footer extends StatelessWidget{
       color: App.darkGrey,
       child: Column(
           children: [
-            Divider(
-              color: App.lightGrey,
-              indent: 15,
-              endIndent: 15,
-            ),
-            SizedBox(height:15),
-            _description(context),
-            SizedBox(height: App.getDeviceHeightPercent(5, context)),
+            SizedBox(height:20),
+            homeController.selectNavDrawer.value == 0 ?
+                desc != null ? Center() :
+            _description(context) : Center(),
+            SizedBox(height: homeController.selectNavDrawer.value == 0 ? 50 : 0),
             Container(
               width: App.getDeviceWidthPercent(80, context),
               height: 40,
               child: SvgPicture.asset("assets/icons/logo.svg"),
             ),
-            SizedBox(height: App.getDeviceHeightPercent(5, context)),
+            SizedBox(height: 40),
             Container(
               width: App.getDeviceWidthPercent(90, context),
-              child: const Text("TOP BRAND",
-                style: TextStyle(
+              child: Text(App_Localization.of(context).translate("top_brands").toUpperCase(),
+                style: const TextStyle(
                     fontSize: CommonTextStyle.bigTextStyle,
                     color: App.orange,
                     letterSpacing: 0.3,
@@ -60,7 +64,8 @@ class Footer extends StatelessWidget{
                   itemBuilder: (context,index) {
                   return GestureDetector(
                     onTap: () {
-                      /// go to brand page
+                      introductionController.carsByBrand(context,
+                          introductionController.homeData!.data!.brands[index].id,index);
                     },
                     child: Text(introductionController.homeData!.data!.brands[index].name,
                         style: TextStyle(

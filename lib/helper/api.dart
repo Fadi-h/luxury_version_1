@@ -1,10 +1,15 @@
 import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
 import 'package:http/http.dart' as http;
+import 'package:luxury_version_1/model/about.dart';
 import 'package:luxury_version_1/model/all-cars.dart';
+import 'package:luxury_version_1/model/blog-info.dart';
+import 'package:luxury_version_1/model/blog.dart';
 import 'package:luxury_version_1/model/brands.dart';
 import 'package:luxury_version_1/model/car-info.dart';
+import 'package:luxury_version_1/model/faq.dart';
 import 'package:luxury_version_1/model/home-data.dart';
+import 'package:luxury_version_1/model/terms.dart';
 
 class API {
 
@@ -64,10 +69,7 @@ class API {
     var headers = {
       'accept-language': 'en'
     };
-    var request = http.MultipartRequest('GET', Uri.parse( url +'/api/carDetails?id=$id'));
-    request.fields.addAll({
-      'id': id
-    });
+    var request = http.Request('GET', Uri.parse( url +'/api/carDetails?id=$id'));
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -133,6 +135,136 @@ class API {
       return null;
     }
 
+  }
+
+  static Future<AllBrands?> getCarsByBrand(int carId) async {
+    var headers = {
+      'accept-language': 'en'
+    };
+    var request = http.Request('GET', Uri.parse(url + '/api/carsBrand?id=$carId'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var data = await response.stream.bytesToString();
+      var jsonData = json.decode(data);
+      AllBrands allBrands = AllBrands.fromMap(jsonData);
+      // print(allBrands.message);
+      // print(allBrands.brand.brands!.length);
+      return allBrands;
+    }
+    else {
+      print(response.reasonPhrase);
+      return null;
+    }
+  }
+
+  static Future<AboutUs?> getAboutUs() async {
+    var headers = {
+      'accept-language': 'en'
+    };
+    var request = http.Request('GET', Uri.parse(url + '/api/about'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var data = await response.stream.bytesToString();
+      var jsonData = json.decode(data);
+      // print(data);
+      return AboutUs.fromMap(jsonData);
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  static Future<RentTerms?> getTerms() async {
+    var headers = {
+      'accept-language': 'en'
+    };
+    var request = http.Request('GET', Uri.parse(url + '/api/terms'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var data = await response.stream.bytesToString();
+      var jsonData = json.decode(data);
+      // print(data);
+      return RentTerms.fromMap(jsonData);
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  static Future<Faq?> getFAQ() async {
+    var headers = {
+      'accept-language': 'en'
+    };
+    var request = http.Request('GET', Uri.parse(url + '/api/faq'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var data = await response.stream.bytesToString();
+      var jsonData = json.decode(data);
+      // print(data);
+      return Faq.fromMap(jsonData);
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  static Future<BLOG?> getBlogs() async {
+    var headers = {
+      'accept-language': 'en'
+    };
+    var request = http.Request('GET', Uri.parse(url + '/api/blog'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var data = await response.stream.bytesToString();
+      var jsonData = json.decode(data);
+      // print(data);
+      return BLOG.fromMap(jsonData);
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  static Future<BlogsInfo?> getBlogById(String id) async {
+    var headers = {
+      'accept-language': 'en'
+    };
+    var request = http.Request('GET', Uri.parse( url +'/api/blogDetails?id=$id'));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      var data = await response.stream.bytesToString();
+      var jsonData = json.decode(data);
+      BlogsInfo blogsInfo = BlogsInfo.fromMap(jsonData);
+      // print(blogsInfo.message);
+      // print(blogsInfo.blogData!.blogInfo!.id);
+      return blogsInfo;
+    }
+    else {
+      print(response.reasonPhrase);
+      return null;
+    }
   }
 
 }

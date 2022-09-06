@@ -82,9 +82,12 @@ class Brand {
   Brand({
     required this.id,
     required this.name,
+    required this.titleEn,
+    required this.titleAr,
     required this.img,
     required this.cover,
-    required this.description,
+    required this.descriptionEn,
+    required this.descriptionAr,
     required this.slug,
     required this.orderNum,
     required this.metaTitleEn,
@@ -94,77 +97,71 @@ class Brand {
     required this.metaDescriptionEn,
     required this.metaDescriptionAr,
     required this.metaImage,
-    required this.updatedAt,
+    // required this.updatedAt,
   });
 
   int id;
   String name;
+  String titleEn;
+  String titleAr;
   String img;
   String cover;
-  String description;
+  String descriptionEn;
+  String descriptionAr;
   String slug;
   int orderNum;
   String metaTitleEn;
-  MetaAr? metaTitleAr;
+  String metaTitleAr;
   String metaKeywordsEn;
-  MetaAr? metaKeywordsAr;
+  String metaKeywordsAr;
   String metaDescriptionEn;
-  MetaDescriptionAr? metaDescriptionAr;
-  String? metaImage;
-  DateTime? updatedAt;
+  String metaDescriptionAr;
+  String metaImage;
+  // DateTime updatedAt;
 
   factory Brand.fromJson(Map<String, dynamic> json) => Brand(
     id: json["id"] == null ? -1 : json["id"],
-    name: json["name"] == null ? "null" : json["name"],
-    img: json["img"] == null ? null : json["img"],
-    cover: json["cover"] == null ? null : json["cover"],
-    description: json["description"] == null ? "null" : json["description"],
-    slug: json["slug"] == null ? null : json["slug"],
-    orderNum: json["order_num"] == null ? null : json["order_num"],
-    metaTitleEn: json["meta_title_en"] == null ? null : json["meta_title_en"],
-    metaTitleAr: json["meta_title_ar"] == null ? null : metaArValues.map[json["meta_title_ar"]],
-    metaKeywordsEn: json["meta_keywords_en"] == null ? null : json["meta_keywords_en"],
-    metaKeywordsAr: json["meta_keywords_ar"] == null ? null : metaArValues.map[json["meta_keywords_ar"]],
-    metaDescriptionEn: json["meta_description_en"] == null ? "null" : json["meta_description_en"],
-    metaDescriptionAr: json["meta_description_ar"] == null ? null : metaDescriptionArValues.map[json["meta_description_ar"]],
-    metaImage: json["meta_image"] == null ? null : json["meta_image"],
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    name: json["name"] == null ? "" : json["name"],
+    titleEn: json["title_en"] == null ? "" : json["title_en"],
+    titleAr: json["title_ar"] == null ? "" : json["title_ar"],
+    img: json["img"] == null ? "" : json["img"],
+    cover: json["cover"] == null ? "" : json["cover"],
+    descriptionEn: json["description_en"] == null ? "" : json["description_en"],
+    descriptionAr: json["description_ar"] == null ? "" : json["description_ar"],
+    slug: json["slug"] == null ? "" : json["slug"],
+    orderNum: json["order_num"] == null ? -1 : json["order_num"],
+    metaTitleEn: json["meta_title_en"] == null ? "" : json["meta_title_en"],
+    metaTitleAr: json["meta_title_ar"] == null ? "" : json["meta_title_ar"],
+    metaKeywordsEn: json["meta_keywords_en"] == null ? "" : json["meta_keywords_en"],
+    metaKeywordsAr: json["meta_keywords_ar"] == null ? "" : json["meta_keywords_ar"],
+    metaDescriptionEn: json["meta_description_en"] == null ? "" : json["meta_description_en"],
+    metaDescriptionAr: json["meta_description_ar"] == null ? "" : json["meta_description_ar"],
+    metaImage: json["meta_image"] == null ? "" : json["meta_image"],
+    // updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id == null ? null : id,
     "name": name == null ? null : name,
+    "title_en": titleEn == null ? null : titleEn,
+    "title_ar": titleAr == null ? null : titleAr,
     "img": img == null ? null : img,
     "cover": cover == null ? null : cover,
-    "description": description == null ? null : description,
+    "description_en": descriptionEn == null ? null : descriptionEn,
+    "description_ar": descriptionAr == null ? null : descriptionAr,
     "slug": slug == null ? null : slug,
     "order_num": orderNum == null ? null : orderNum,
     "meta_title_en": metaTitleEn == null ? null : metaTitleEn,
-    "meta_title_ar": metaTitleAr == null ? null : metaArValues.reverse[metaTitleAr],
+    "meta_title_ar": metaTitleAr == null ? null : metaTitleAr,
     "meta_keywords_en": metaKeywordsEn == null ? null : metaKeywordsEn,
-    "meta_keywords_ar": metaKeywordsAr == null ? null : metaArValues.reverse[metaKeywordsAr],
+    "meta_keywords_ar": metaKeywordsAr == null ? null : metaKeywordsAr,
     "meta_description_en": metaDescriptionEn == null ? null : metaDescriptionEn,
-    "meta_description_ar": metaDescriptionAr == null ? null : metaDescriptionArValues.reverse[metaDescriptionAr],
+    "meta_description_ar": metaDescriptionAr == null ? null : metaDescriptionAr,
     "meta_image": metaImage == null ? null : metaImage,
-    "updated_at": updatedAt == null ? null : updatedAt!,
+    // "updated_at": updatedAt == null ? null : updatedAt.toIso8601String(),
   };
 }
 
-enum MetaDescriptionAr { EMPTY, P_SPAN_STYLE_FONT_SIZE_144_PX_BENTLEY_SPAN_BR_P, P_INFINITI_BR_P }
-
-final metaDescriptionArValues = EnumValues({
-  "": MetaDescriptionAr.EMPTY,
-  "<p>Infiniti<br></p>": MetaDescriptionAr.P_INFINITI_BR_P,
-  "<p><span style=\"font-size: 14.4px;\">Bentley</span><br></p>": MetaDescriptionAr.P_SPAN_STYLE_FONT_SIZE_144_PX_BENTLEY_SPAN_BR_P
-});
-
-enum MetaAr { EMPTY, BENTLEY, INFINITI }
-
-final metaArValues = EnumValues({
-  "Bentley": MetaAr.BENTLEY,
-  "": MetaAr.EMPTY,
-  "Infiniti": MetaAr.INFINITI
-});
 
 class CarBody {
   CarBody({
@@ -275,7 +272,9 @@ class Datum {
     required this.innerColor,
     required this.outerColor,
     required this.seats,
+    required this.oldDailyPrice,
     required this.dailyPrice,
+    required this.oldHourlyPrice,
     required this.hourlyPrice,
     required this.descriptionEn,
     required this.descriptionAr,
@@ -304,7 +303,9 @@ class Datum {
   String innerColor;
   String outerColor;
   int seats;
+  int oldDailyPrice;
   int dailyPrice;
+  int oldHourlyPrice;
   int hourlyPrice;
   dynamic descriptionEn;
   dynamic descriptionAr;
@@ -338,8 +339,10 @@ class Datum {
     innerColor: json["inner_color"] == null ? "null" : json["inner_color"],
     outerColor: json["outer_color"] == null ? "null" : json["outer_color"],
     seats: json["seats"] == null ? "null" : json["seats"],
-    dailyPrice: json["daily_price"] == null ? "null" : json["daily_price"],
-    hourlyPrice: json["hourly_price"] == null ? "null" : json["hourly_price"],
+    oldDailyPrice: json["old_daily_price"] == null ? -1 : json["old_daily_price"],
+    dailyPrice: json["daily_price"] == null ? -1 : json["daily_price"],
+    oldHourlyPrice: json["old_hourly_price"] == null ? -1 : json["old_hourly_price"],
+    hourlyPrice: json["hourly_price"] == null ? -1 : json["hourly_price"],
     descriptionEn: json["description_en"],
     descriptionAr: json["description_ar"],
     imgs: json["imgs"] == null ? "null" : json["imgs"],

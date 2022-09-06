@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:luxury_version_1/controller/brands_controller.dart';
 import 'package:luxury_version_1/controller/home_controller.dart';
 import 'package:luxury_version_1/controller/introduction_controller.dart';
+import 'package:luxury_version_1/helper/api.dart';
 import 'package:luxury_version_1/helper/app.dart';
 import 'package:luxury_version_1/widgets/drawer.dart';
 import 'package:luxury_version_1/widgets/footer.dart';
@@ -23,7 +24,7 @@ class BrandPage extends StatelessWidget {
     return Scaffold(
         key: brandsController.key,
         drawer: CustomDrawer(homeController: homeController),
-        body: Obx(() => Stack(
+        body: Stack(
           children: [
             Container(
               width: App.getDeviceWidthPercent(100, context),
@@ -32,7 +33,7 @@ class BrandPage extends StatelessWidget {
             ),
             brands(context),
           ],
-        ))
+        )
     );
   }
 
@@ -40,9 +41,45 @@ class BrandPage extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: MediaQuery.of(context).viewPadding.top,),
           header(context),
           SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: App.getDeviceWidthPercent(90, context),
+                child: Text("LUXURY BRANDS CAR",
+                  style: TextStyle(
+                    letterSpacing: 1,
+                    height: 1.3,
+                    fontSize: CommonTextStyle.xXlargeTextStyle,
+                    color: App.orange,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: App.getDeviceWidthPercent(90, context),
+                child: Text("Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry. Lorem Ipsum Has Been The Industry's.",
+                  style: TextStyle(
+                    letterSpacing: 0.3,
+                    height: 1.3,
+                    fontSize: CommonTextStyle.mediumTextStyle,
+                    color: App.lightGrey,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 30),
           body(context),
           SizedBox(height: 20),
           Footer(introductionController: introductionController)
@@ -91,28 +128,6 @@ class BrandPage extends StatelessWidget {
   body(BuildContext context) {
     return Column(
       children: [
-        TitleAndDescription(
-          text1: "LUXURY BRANDS CAR",
-          text2: "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry. Lorem Ipsum Has Been The Industry's.",
-          textAlign: TextAlign.center,
-          textStyle1: const TextStyle(
-            letterSpacing: 1,
-            height: 1.3,
-            fontSize: CommonTextStyle.xXlargeTextStyle,
-            color: App.orange,
-            fontWeight: FontWeight.bold,
-          ),
-          textStyle2: const TextStyle(
-              letterSpacing: 0.3,
-              height: 1.3,
-              fontSize: CommonTextStyle.smallTextStyle,
-              color: App.lightGrey,
-              fontWeight: FontWeight.normal
-          ),
-          width1: 90,
-          width2: 85,
-        ),
-        SizedBox(height: 15),
         Container(
           width: App.getDeviceWidthPercent(95, context),
           child: GridView.builder(
@@ -120,18 +135,22 @@ class BrandPage extends StatelessWidget {
                 crossAxisCount: 3,
                 childAspectRatio: 2,
               ),
-              itemCount: brandsController.brands.length,
+              itemCount: introductionController.homeData!.data!.brands.length,
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context,index) {
                 return GestureDetector(
                   onTap: () {
-                    ///
+                    introductionController.carsByBrand(context,
+                        introductionController.homeData!.data!.brands[index].id,index);
                   },
                   child: Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
-                      child: SvgPicture.asset(brandsController.brands[index],width: 100,height: 100,fit: BoxFit.fitHeight,)),
+                      child: SvgPicture.network(
+                        API.url + "/" + introductionController.homeData!.data!.brands[index].img,
+                        fit: BoxFit.fitHeight,
+                      )),
                 );
               }),
         ),

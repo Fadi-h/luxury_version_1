@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:luxury_version_1/app_localization.dart';
 import 'package:luxury_version_1/controller/home_controller.dart';
+import 'package:luxury_version_1/controller/introduction_controller.dart';
 import 'package:luxury_version_1/helper/app.dart';
+import 'package:luxury_version_1/helper/global.dart';
 import 'package:luxury_version_1/widgets/container_with_image.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -14,6 +17,8 @@ class CustomDrawer extends StatelessWidget {
 
   });
 
+  IntroductionController introductionController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Obx(() => Container(
@@ -21,7 +26,7 @@ class CustomDrawer extends StatelessWidget {
       child: Drawer(
         child: Container(
           width: App.getDeviceWidthPercent(100, context),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/images/nav-bg.webp",),
                   fit: BoxFit.cover
@@ -45,7 +50,9 @@ class CustomDrawer extends StatelessWidget {
                         child: ContainerWithImage(
                             width: 30,
                             height: 30,
-                            image: "assets/icons/back-icon.svg",
+                            image: Global.languageCode == "en" ?
+                            "assets/icons/back-icon.svg" :
+                            "assets/icons/back-icon_arabic.svg",
                             option: 0
                           ),
                         ),
@@ -76,16 +83,16 @@ class CustomDrawer extends StatelessWidget {
                       },
                       child: drawerText(homeController, 0, context, "home", CommonTextStyle.mediumTextStyle, FontWeight.normal),
                     ),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     GestureDetector(
                       onTap: () {
                         homeController.selectNavDrawer.value = 1;
                         Get.back();
                         homeController.key.currentState!.openEndDrawer();
                       },
-                      child: drawerText(homeController, 1, context, "about us", CommonTextStyle.mediumTextStyle, FontWeight.normal),
+                      child: drawerText(homeController, 1, context, "about_us", CommonTextStyle.mediumTextStyle, FontWeight.normal),
                     ),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     GestureDetector(
                       onTap: () {
                         homeController.selectNavDrawer.value = 2;
@@ -94,16 +101,16 @@ class CustomDrawer extends StatelessWidget {
                       },
                       child: drawerText(homeController, 2, context, "brands",CommonTextStyle.mediumTextStyle, FontWeight.normal),
                     ),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     GestureDetector(
                       onTap: () {
                         homeController.selectNavDrawer.value = 3;
                         Get.back();
                         homeController.key.currentState!.openEndDrawer();
                       },
-                      child: drawerText(homeController, 3, context, "rent terms",CommonTextStyle.mediumTextStyle, FontWeight.normal),
+                      child: drawerText(homeController, 3, context, "rent_terms",CommonTextStyle.mediumTextStyle, FontWeight.normal),
                     ),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     GestureDetector(
                       onTap: () {
                         homeController.selectNavDrawer.value = 4;
@@ -112,7 +119,7 @@ class CustomDrawer extends StatelessWidget {
                       },
                       child: drawerText(homeController, 4, context, "faq",CommonTextStyle.mediumTextStyle, FontWeight.normal),
                     ),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     GestureDetector(
                       onTap: () {
                         homeController.selectNavDrawer.value = 5;
@@ -121,91 +128,60 @@ class CustomDrawer extends StatelessWidget {
                       },
                       child: drawerText(homeController, 5, context, "blog",CommonTextStyle.mediumTextStyle, FontWeight.normal),
                     ),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     GestureDetector(
                       onTap: () {
                         homeController.selectNavDrawer.value = 6;
                         Get.back();
                         homeController.key.currentState!.openEndDrawer();
                       },
-                      child: drawerText(homeController, 6, context, "contact us",CommonTextStyle.mediumTextStyle, FontWeight.normal),
+                      child: drawerText(homeController, 6, context, "contact_us",CommonTextStyle.mediumTextStyle, FontWeight.normal),
                     ),
-                    SizedBox(height: 10),
-                    /// language
-                    Column(
-                      children: [
-                        AnimatedContainer(
-                          duration:
-                          Duration(milliseconds: 300),
-                          width: homeController.searchIcon.value ? 40 : MediaQuery.of(context).size.width * 0.75,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                    child: homeController.searchIcon.value ?
-                                    GestureDetector(
-                                      child: Icon(
-                                        Icons.search,
-                                        color: App.field,
-                                        size: 28,
-                                      ),
-                                      onTap: () {
-                                        homeController.searchIcon.value = !homeController.searchIcon.value;
-                                      },
-                                    ) :
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 5,
-                                          child: Container(
-                                            height: 45,
-                                            child: TextField(
-                                              textAlignVertical: TextAlignVertical.bottom,
-                                              controller: homeController.search,
-                                              style: const TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: CommonTextStyle.mediumTextStyle
-                                              ),
-                                              cursorColor: Colors.black,
-                                              decoration: const InputDecoration(
-                                                fillColor: App.field,
-                                                filled: true,
-                                                hintText: "Search",
-                                                hintStyle: TextStyle(color: Colors.grey, fontSize: CommonTextStyle.mediumTextStyle),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                                                  borderSide: BorderSide(color: Colors.white),),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: App.orange),
-                                                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: GestureDetector(
-                                            child: Icon(
-                                              Icons.search,
-                                              color: App.field,
-                                              size: 28,
-                                            ),
-                                            onTap: () {
-                                              homeController.searchIcon.value = !homeController.searchIcon.value;
-                                            },
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                ),
-                              ),
-                            ],
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        homeController.key.currentState!.openEndDrawer();
+                        if(Global.languageCode == "en"){
+                          Global.changeLanguage(context, "ar");
+                          Get.back();
+                        }else {
+                          Global.changeLanguage(context, "en");
+                          Get.back();
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(Global.languageCode == "en" ?
+                          "assets/icons/en.svg" : "assets/icons/ar.svg",
+                            fit: BoxFit.cover,
                           ),
-                        ),
+                          const SizedBox(width: 10,),
+                          Text(Global.languageCode == "en" ?
+                          "AR" : "EN",
+                            style: TextStyle(
+                                fontSize: CommonTextStyle.mediumTextStyle,
+                                color: Colors.white
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            introductionController.pressedOnSearch(context);
+                          },
+                          child: Container(
+                            child: Icon(Icons.search,size: 23,color: Colors.white),
+                          ),
+                        )
                       ],
                     ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 30),
                     Container(
                       width:App.getDeviceWidthPercent(60, context),
                       child: Row(
@@ -238,7 +214,7 @@ class CustomDrawer extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ],
@@ -256,7 +232,7 @@ class CustomDrawer extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 15),
           child: Center(
-              child: Text(text.toUpperCase(),
+              child: Text(App_Localization.of(context).translate(text).toUpperCase(),
                 style: TextStyle(
                   color: homeController.selectNavDrawer.value == index ?  App.orange :  Colors.white,
                   fontSize: fontSize,

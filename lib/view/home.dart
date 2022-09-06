@@ -1,17 +1,18 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:luxury_version_1/app_localization.dart';
 import 'package:luxury_version_1/controller/home_controller.dart';
 import 'package:luxury_version_1/controller/introduction_controller.dart';
 import 'package:luxury_version_1/helper/api.dart';
 import 'package:luxury_version_1/helper/app.dart';
-import 'package:luxury_version_1/model/all-cars.dart';
+import 'package:luxury_version_1/helper/global.dart';
 import 'package:luxury_version_1/model/home-data.dart';
+import 'package:luxury_version_1/view/book.dart';
 import 'package:luxury_version_1/view/drawer/FAQ.dart';
 import 'package:luxury_version_1/view/drawer/about_us.dart';
-import 'package:luxury_version_1/view/drawer/blog.dart';
+import 'package:luxury_version_1/view/drawer/BLOG.dart';
 import 'package:luxury_version_1/view/drawer/brandPage.dart';
 import 'package:luxury_version_1/view/drawer/contact_us.dart';
 import 'package:luxury_version_1/view/drawer/rent_terms.dart';
@@ -23,235 +24,356 @@ import 'package:luxury_version_1/widgets/footer.dart';
 import 'package:luxury_version_1/widgets/header.dart';
 import 'package:luxury_version_1/widgets/image_and_text.dart';
 import 'package:luxury_version_1/widgets/text_app.dart';
-import 'package:luxury_version_1/widgets/title_and_description.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-
 
 class Home extends StatelessWidget {
 
   HomeData homeData;
-  AllCars allCars;
   HomeController homeController = Get.put(HomeController());
   IntroductionController introductionController = Get.find();
 
-  Home(this.homeData, this.allCars) {
+  Home(this.homeData) {
     homeController.selectNavDrawer.value = 0;
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
+      backgroundColor: App.darkGrey,
         key: homeController.key,
-        drawer: CustomDrawer(homeController: homeController),
-        body: Stack(
-          children: [
-            Container(
-              width: App.getDeviceWidthPercent(100, context),
-              height: App.getDeviceHeightPercent(100, context),
-              color: App.darkGrey,
+        floatingActionButtonLocation:
+        FloatingActionButtonLocation.startFloat,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            App.lunchURL(context, "https://api.whatsapp.com/send?phone=+971553451555&text=");
+          },
+          child: Container(
+            width: 60,
+            height: 60,
+            decoration: const BoxDecoration(
+                color: Colors.green,
+                shape: BoxShape.circle
             ),
-            homeController.selectNavDrawer.value == 0 ?
-            home(context) : homeController.selectNavDrawer.value == 1 ? AboutUs() :
-            homeController.selectNavDrawer.value == 2 ? BrandPage() : homeController.selectNavDrawer.value == 3 ? RentTerms() :
-            homeController.selectNavDrawer.value == 4 ? FAQ() : homeController.selectNavDrawer.value == 5 ? Blog()  :
-            homeController.selectNavDrawer.value == 6 ? ContactUs() : home(context),
-            Positioned(
-              left: 30,
-              bottom: 30,
-              child: GestureDetector(
-                onTap: () {
-                  App.lunchURL(context, "https://api.whatsapp.com/send?phone=+971553451555&text=");
-                },
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                      color: Colors.green,
-                      shape: BoxShape.circle
-                  ),
-                  child: Center(
-                    child: ContainerWithImage(
-                        width: 30,
-                        height: 30,
-                        image: "assets/icons/whatsapp.svg",
-                        option: 0
-                    ),
-                  ),
-                ),
+            child: Center(
+              child: ContainerWithImage(
+                  width: 30,
+                  height: 30,
+                  image: "assets/icons/whatsapp.svg",
+                  option: 0
               ),
             ),
-          ],
+          ),
+        ),
+        drawer: CustomDrawer(homeController: homeController),
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Container(
+                width: App.getDeviceWidthPercent(100, context),
+                height: App.getDeviceHeightPercent(100, context),
+                color: App.darkGrey,
+              ),
+              homeController.selectNavDrawer.value == 0 ?
+              home(context) : homeController.selectNavDrawer.value == 1 ? AboutUs() :
+              homeController.selectNavDrawer.value == 2 ? BrandPage() : homeController.selectNavDrawer.value == 3 ? RentTerms() :
+              homeController.selectNavDrawer.value == 4 ? FAQ() : homeController.selectNavDrawer.value == 5 ? Blog()  :
+              homeController.selectNavDrawer.value == 6 ? ContactUs() : home(context),
+              Positioned(
+               child: Column(
+                 children: [
+                   Header(
+                     homeController: homeController,
+                     onTap: () {
+                       homeController.key.currentState!.openDrawer();
+                     },
+                     child: GestureDetector(
+                       onTap: () {
+                         Navigator.of(context).push(PageRouteBuilder(
+                           pageBuilder: (context, animation, secondaryAnimation) => Filter(),
+                           transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                             const begin = Offset(1.0,0.0);
+                             const end = Offset.zero;
+                             const curve = Curves.easeInOut;
+                             var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                             return SlideTransition(
+                               position: animation.drive(tween),
+                               child: child,
+                             );
+                           },
+                         ));
+                       },
+                       child: ContainerWithImage(
+                         width: 30,
+                         height: 30,
+                         image: "assets/icons/filter.svg",
+                         option: 0,
+                         color: Colors.transparent,
+                       ),
+                     ),
+                   ),
+                 ],
+               )
+              ),
+              introductionController.carsLoading.value ?
+              Container(
+                width: App.getDeviceWidthPercent(100, context),
+                height: App.getDeviceHeightPercent(100, context),
+                color: App.darkGrey,
+                child: const Center(
+                  child: CircularProgressIndicator(color: App.orange,),
+                ),
+              ) : const Center(),
+            ],
+          ),
         )
     ));
   }
 
   home(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(height: MediaQuery.of(context).viewPadding.top,),
-          Header(
-            homeController: homeController,
-            onTap: () {
-              homeController.key.currentState!.openDrawer();
-            },
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) => Filter(),
-                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                    const begin = Offset(1.0,0.0);
-                    const end = Offset.zero;
-                    const curve = Curves.easeInOut;
-                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                    return SlideTransition(
-                      position: animation.drive(tween),
-                      child: child,
-                    );
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              Header(
+                homeController: homeController,
+                onTap: () {
+                  homeController.key.currentState!.openDrawer();
+                },
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => Filter(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        const begin = Offset(1.0,0.0);
+                        const end = Offset.zero;
+                        const curve = Curves.easeInOut;
+                        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                        return SlideTransition(
+                          position: animation.drive(tween),
+                          child: child,
+                        );
+                      },
+                    ));
                   },
-                ));
-              },
-              child: ContainerWithImage(
-                  width: 30,
-                  height: 30,
-                  image: "assets/icons/filter.svg",
-                  option: 0
+                  child: ContainerWithImage(
+                    width: 30,
+                    height: 30,
+                    image: "assets/icons/filter.svg",
+                    option: 0,
+                    color: Colors.transparent,
+                  ),
+                ),
               ),
-            ),
-          ),
-          SizedBox(height: 15),
-          GestureDetector(
-            onTap: () {
-              introductionController.pressedOnSearch(context);
-            },
-            child: Container(
-              width: App.getDeviceWidthPercent(90, context),
-              height: 40,
-              decoration: BoxDecoration(
-                color: App.grey,
-                borderRadius: BorderRadius.circular(15)
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 3),
-                      child: Icon(Icons.search,color: App.lightGrey,size: 23),
+              const SizedBox(height: 15),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) => Filter(),
+                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(1.0,0.0);
+                      const end = Offset.zero;
+                      const curve = Curves.easeInOut;
+                      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                      return SlideTransition(
+                        position: animation.drive(tween),
+                        child: child,
+                      );
+                    },
+                  ));
+                },
+                child: Container(
+                    width: App.getDeviceWidthPercent(85, context),
+                    height: 45,
+                    decoration: BoxDecoration(
+                        color: App.grey,
+                        borderRadius: BorderRadius.circular(15)
                     ),
-                    SizedBox(width: 5,),
-                    Text("CHOOSE YOUR DREAM CAR",
-                      style: TextStyle(
-                        color: App.lightGrey,
-                        fontSize: CommonTextStyle.smallTextStyle
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(top: 3),
+                            child: Icon(Icons.filter_alt_rounded,color: App.orange,size: 23),
+                          ),
+                          const SizedBox(width: 5,),
+                          Text(App_Localization.of(context).translate("filter"),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: CommonTextStyle.mediumTextStyle
+                            ),
+                          )
+                        ],
                       ),
                     )
-                  ],
                 ),
-              )
-            ),
-          ),
-          SizedBox(height: 15),
-          superCategory(context,homeData, homeController.selectSuperCategory.value),
-          SizedBox(height: 15),
-          homeData.data!.carType[homeController.selectSuperCategory.value].id !=
-              allCars.data!.cars[homeController.selectSuperCategory.value].typeId ?
-          Column(
-            children: [
-              SizedBox(height: 5),
-              Container(
-                  width: App.getDeviceWidthPercent(50, context),
-                  height: 40,
-                  decoration: BoxDecoration(
-                      color: App.field,
-                      borderRadius: BorderRadius.circular(5)
+              ),
+              const SizedBox(height: 15),
+              superCategory(context,homeData, homeController.selectSuperCategory.value),
+              const SizedBox(height: 15),
+              homeData.data!.carType[homeController.selectSuperCategory.value].id !=3?
+              Column(
+                children: [
+                  Container(
+                    width: App.getDeviceWidthPercent(50, context),
+                    height: 40,
+                    decoration: BoxDecoration(
+                        color: App.field,
+                        borderRadius: BorderRadius.circular(5)
+                    ),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 10,),
+                        Text(App_Localization.of(context).translate("no_results_found!"),
+                            style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: CommonTextStyle.mediumTextStyle
+                            )
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Row(
+                  const SizedBox(height: 15,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(width: 10,),
-                      Text("No Result Found!",
+                      Container(
+                        width: App.getDeviceWidthPercent(90, context),
+                        child: const Text("LUXURY RENTAL CAR",
                           style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: CommonTextStyle.mediumTextStyle
-                          )
+                            letterSpacing: 1,
+                            height: 1.3,
+                            fontSize: CommonTextStyle.xXlargeTextStyle,
+                            color: App.orange,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ],
                   ),
-              ),
-              SizedBox(height: 20,),
-              TitleAndDescription(
-                text1: "LUXURY RENTAL CAR",
-                text2: "Live Your Life Luxuriously And Elegantly! Take A Graceful Drive With A Professional Driver From Our Chauffeur Services In DubaiFor Comfort And Ease.",
-                textAlign: TextAlign.center,
-                textStyle1: const TextStyle(
-                  height: 1.3,
-                  letterSpacing: 1,
-                  fontSize: CommonTextStyle.xXlargeTextStyle,
-                  color: App.orange,
-                  fontWeight: FontWeight.bold,
-                ),
-                textStyle2: const TextStyle(
-                    letterSpacing: 0.3,
-                    height: 1.3,
-                    fontSize: CommonTextStyle.smallTextStyle,
-                    color: App.lightGrey,
-                    fontWeight: FontWeight.normal
-                ),
-                width1: 90,
-                width2: 90,
-              ),
-              SizedBox(height: 20,),
+                  const SizedBox(height: 15,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: App.getDeviceWidthPercent(90, context),
+                        child: const Text("Live Your Life Luxuriously And Elegantly! Take A Graceful Drive With A Professional Driver From Our Chauffeur Services In DubaiFor Comfort And Ease.",
+                          style: TextStyle(
+                              letterSpacing: 0.3,
+                              height: 1.3,
+                              fontSize: CommonTextStyle.smallTextStyle,
+                              color: App.lightGrey,
+                              fontWeight: FontWeight.normal
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20,),
+                  Container(
+                    width: App.getDeviceWidthPercent(90, context),
+                    height: App.getDeviceHeightPercent(28, context),
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/images/chauffeur.webp"),
+                            fit: BoxFit.fill
+                        )
+                    ),
+                  ),
+                  const SizedBox(height: 20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: App.getDeviceWidthPercent(90, context),
+                        child: const Text("WHY OUR LUXURY CHAUFFEUR SERVICE?",
+                          style: TextStyle(
+                            letterSpacing: 1,
+                            height: 1.3,
+                            fontSize: CommonTextStyle.xXlargeTextStyle,
+                            color: App.orange,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: App.getDeviceWidthPercent(90, context),
+                        child: const Text("Let Go Of The Wheel And Have Your Troubles Fade Away As A Chauffeur Takes Over Your Drive. Whether You're Going To A Business Meeting, A Late Dinner Party, Or Picking Up A Friend, We Can Make It Easy For You. Have Our Professional Take You Where You Want To Go In The Dream Car Of Your Choice.",
+                          style: TextStyle(
+                              letterSpacing: 0.3,
+                              height: 1.3,
+                              fontSize: CommonTextStyle.smallTextStyle,
+                              color: App.lightGrey,
+                              fontWeight: FontWeight.normal
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15,),
+                ],
+              ) : category(context),
+              introductionController.loading.value ?
               Container(
-                width: App.getDeviceWidthPercent(90, context),
-                height: App.getDeviceHeightPercent(28, context),
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/chauffeur.webp"),
-                        fit: BoxFit.fill
-                    )
+                width: App.getDeviceWidthPercent(100, context),
+                height: App.getDeviceHeightPercent(50, context),
+                color: App.darkGrey,
+                child: const Center(
+                  child: CircularProgressIndicator(color: App.orange,),
                 ),
+              ) :
+              homeData.data!.carType[homeController.selectSuperCategory.value].id !=
+                  3 ? const Center() :
+              products(context),
+              homeData.data!.carType[homeController.selectSuperCategory.value].id !=
+                  3 ? const Center() : (introductionController.lengthproductList.value == introductionController.allCars!.data!.cars.length)
+                  || introductionController.loading.value == true
+                  ? const Center() :
+              GestureDetector(
+                  onTap: () {
+                    introductionController.viewAllProducts();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: App.getDeviceWidthPercent(40, context),
+                        height: 35,
+                        decoration: BoxDecoration(
+                            color: App.field,
+                            borderRadius: BorderRadius.circular(15)
+                        ),
+                        child: Center(
+                            child: Text(App_Localization.of(context).translate("see_more"),
+                                style: const TextStyle(
+                                  color: App.orange,
+                                  fontSize: CommonTextStyle.mediumTextStyle,
+                                  fontWeight: FontWeight.bold,
+                                )
+                            )
+                        ),
+                      )
+                    ],
+                  )
               ),
-              SizedBox(height: 20,),
-              TitleAndDescription(
-                text1: "WHY OUR LUXURY CHAUFFEUR SERVICE?",
-                text2: "Let Go Of The Wheel And Have Your Troubles Fade Away As A Chauffeur Takes Over Your Drive. Whether You're Going To A Business Meeting, A Late Dinner Party, Or Picking Up A Friend, We Can Make It Easy For You. Have Our Professional Take You Where You Want To Go In The Dream Car Of Your Choice.",
-                textAlign: TextAlign.center,
-                textStyle1: const TextStyle(
-                  height: 1.3,
-                  letterSpacing: 1,
-                  fontSize: CommonTextStyle.xXlargeTextStyle,
-                  color: App.orange,
-                  fontWeight: FontWeight.bold,
-                ),
-                textStyle2: const TextStyle(
-                    letterSpacing: 0.3,
-                    height: 1.3,
-                    fontSize: CommonTextStyle.smallTextStyle,
-                    color: App.lightGrey,
-                    fontWeight: FontWeight.normal
-                ),
-                width1: 90,
-                width2: 90,
-              ),
+              const SizedBox(height: 20),
+              Footer(introductionController: introductionController)
             ],
-          ) : category(context),
-          introductionController.loading.value ?
-          Container(
-            width: App.getDeviceWidthPercent(100, context),
-            height: App.getDeviceHeightPercent(50, context),
-            color: App.darkGrey,
-            child: Center(
-              child: CircularProgressIndicator(color: App.orange,),
-            ),
-          ) :
-          homeData.data!.carType[homeController.selectSuperCategory.value].id !=
-              allCars.data!.cars[homeController.selectSuperCategory.value].typeId ? Center() :
-          products(context),
-          SizedBox(height: 20),
-          Footer(introductionController: introductionController)
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
   superCategory(BuildContext context,HomeData homeData,int index) {
@@ -271,7 +393,7 @@ class Home extends StatelessWidget {
                   child: Row(
                     children: [
                       Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                               color: homeController.selectSuperCategory.value == index ?
                               App.orange : App.grey,
@@ -288,8 +410,11 @@ class Home extends StatelessWidget {
                                       color: homeController.selectSuperCategory.value == index ? Colors.black : App.orange,
                                   )
                               ),
-                              SizedBox(width: 5),
-                              TextApp(text: homeData.data!.carType[index].nameEn,
+                              const SizedBox(width: 5),
+                              TextApp(text:
+                                  Global.languageCode == "en" ?
+                              homeData.data!.carType[index].nameEn :
+                              homeData.data!.carType[index].nameAr,
                                   textStyle: TextStyle(
                                       fontSize: CommonTextStyle.xSmallTextStyle,
                                       color:  homeController.selectSuperCategory.value == index ? Colors.black : Colors.white,
@@ -319,12 +444,11 @@ class Home extends StatelessWidget {
               homeController.selectCategory.value = index;
               homeController.selectAll.value = true;
               introductionController.loading.value = true;
-              API.getAllCars().then((value) {
+              introductionController.allCars = introductionController.allCarsConst;
+              Future.delayed(const Duration(seconds: 1)).then((value) {
                 introductionController.loading.value = false;
-                if(value != null) {
-                  print(value.data!.cars.length);
-                }
               });
+              introductionController.initProductCount();
               },
             child: Row(
               children: [
@@ -337,7 +461,7 @@ class Home extends StatelessWidget {
                         App.orange : App.grey,
                         borderRadius: BorderRadius.circular(15)
                     ),
-                    child: TextApp(text: "All",
+                    child: TextApp(text: App_Localization.of(context).translate("all").toUpperCase(),
                         textStyle: CommonTextStyle.textStyleForMediumWhiteHalfBold
                     ),
                   ),
@@ -346,7 +470,7 @@ class Home extends StatelessWidget {
                     child: ListView.builder(
                         itemCount: homeData.data!.carBody.length,
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return Obx(() => GestureDetector(
@@ -365,7 +489,10 @@ class Home extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(15)
                                     ),
                                     child: Center(
-                                      child: TextApp(text: homeData.data!.carBody[index].nameEn,
+                                      child: TextApp(text:
+                                      Global.languageCode == "en" ?
+                                      homeData.data!.carBody[index].nameEn :
+                                      homeData.data!.carBody[index].nameAr,
                                           textStyle: CommonTextStyle.textStyleForMediumWhiteHalfBold
                                       ),
                                     ),
@@ -384,11 +511,36 @@ class Home extends StatelessWidget {
     );
   }
   products(BuildContext context) {
-    return Container(
+    return introductionController.allCars!.data!.cars.isEmpty ?
+       Column(
+         children: [
+           const SizedBox(height: 15,),
+           Container(
+             width: App.getDeviceWidthPercent(50, context),
+             height: 40,
+             decoration: BoxDecoration(
+                 color: App.field,
+                 borderRadius: BorderRadius.circular(5)
+             ),
+             child: Row(
+               children: [
+                 const SizedBox(width: 10,),
+                 Text(App_Localization.of(context).translate("no_results_found!"),
+                     style: TextStyle(
+                         color: Colors.grey[600],
+                         fontSize: CommonTextStyle.mediumTextStyle
+                     )
+                 ),
+               ],
+             ),
+           ),
+         ],
+       ) :
+      Container(
         width: App.getDeviceWidthPercent(92, context),
         child: GridView.builder(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            itemCount: allCars.data!.cars.length,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            itemCount: introductionController.lengthproductList.value,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 6/5,
                 crossAxisSpacing: 10,
@@ -396,11 +548,11 @@ class Home extends StatelessWidget {
             ),
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  Get.to(()=>ProductDetails(allCars.data!.cars[index].id));
+                  Get.to(()=>ProductDetails(introductionController.allCars!.data!.cars[index].id));
                   homeController.selectNavDrawer.value = 0;
                 },
                 child: Padding(
@@ -424,17 +576,18 @@ class Home extends StatelessWidget {
                                   child: Container(
                                     width: 35,
                                     height: 35,
-                                    child: SvgPicture.network(API.url + "/" + allCars.data!.cars[index].brands!.img),
+                                    //todo uncomment
+                                    // child: SvgPicture.network(API.url + "/" + introductionController.allCars!.data!.cars[index].brands!.img),
                                   ),
                                 )
                               ],
                             )
                         ),
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
                         Expanded(
                           flex: 1,
                           child: TextApp(
-                              text: allCars.data!.cars[index].slug,
+                              text: introductionController.allCars!.data!.cars[index].slug,
                               textStyle: CommonTextStyle.textStyleForBigOrangeBold
                           ),
                         ),
@@ -443,19 +596,19 @@ class Home extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              allCars.data!.cars[index].hourlyPrice == -1 ?
-                              Center() :
+                              introductionController.allCars!.data!.cars[index].hourlyPrice == -1 ?
+                              const Center() :
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Row(
                                     children: [
                                       TextApp(
-                                          text: " AED " +  allCars.data!.cars[index].hourlyPrice.toString(),
+                                          text: " AED " +  introductionController.allCars!.data!.cars[index].hourlyPrice.toString(),
                                           textStyle: CommonTextStyle.textStyleForMediumWhiteNormal
                                       ),
-                                      Text(" Hourly",
-                                        style: TextStyle(
+                                      Text(" "+App_Localization.of(context).translate("hour"),
+                                        style: const TextStyle(
                                             color: App.lightGrey,
                                             fontSize: CommonTextStyle.mediumTextStyle,
                                             fontStyle: FontStyle.italic
@@ -463,23 +616,23 @@ class Home extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: allCars.data!.cars[index].oldHourlyPrice == 0 ? 0 : 5),
-                                  allCars.data!.cars[index].oldHourlyPrice == 0 ?
-                                  Center() :
+                                  SizedBox(height: introductionController.allCars!.data!.cars[index].oldHourlyPrice == 0 ? 0 : 5),
+                                  introductionController.allCars!.data!.cars[index].oldHourlyPrice == 0 ?
+                                  const Center() :
                                   Row(
                                     children: [
                                       TextApp(
-                                        text: " AED " + allCars.data!.cars[index].oldHourlyPrice.toString(),
-                                        textStyle: TextStyle(
+                                        text: " AED " + introductionController.allCars!.data!.cars[index].oldHourlyPrice.toString(),
+                                        textStyle: const TextStyle(
                                           decoration: TextDecoration.lineThrough,
                                           decorationColor: Colors.red,
                                           color: App.lightGrey,
                                           fontSize: CommonTextStyle.smallTextStyle,
                                         ),
                                       ),
-                                      SizedBox(width: 5,),
+                                      const SizedBox(width: 5,),
                                       TextApp(
-                                        text: ((100 - (allCars.data!.cars[index].hourlyPrice * 100)/allCars.data!.cars[index].oldHourlyPrice).round().toString()) + " % " +" OFF",
+                                        text: ((100 - (introductionController.allCars!.data!.cars[index].hourlyPrice * 100)/introductionController.allCars!.data!.cars[index].oldHourlyPrice).round().toString()) + " % " +" OFF",
                                         textStyle: TextStyle(
                                             color: Colors.green,
                                             fontSize: CommonTextStyle.smallTextStyle,
@@ -490,27 +643,27 @@ class Home extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              allCars.data!.cars[index].hourlyPrice == -1 ||  allCars.data!.cars[index].dailyPrice == -1 ?
-                              Center() :
+                              introductionController.allCars!.data!.cars[index].hourlyPrice == -1 ||  introductionController.allCars!.data!.cars[index].dailyPrice == -1 ?
+                              const Center() :
                               VerticalDivider(
                                 color: App.orange,
                                 thickness: 1,
-                                endIndent: allCars.data!.cars[index].oldHourlyPrice != 0 ? 8 : 12,
-                                indent: allCars.data!.cars[index].oldHourlyPrice != 0 ? 8 : 12,
+                                endIndent: introductionController.allCars!.data!.cars[index].oldHourlyPrice != 0 ? 8 : 12,
+                                indent: introductionController.allCars!.data!.cars[index].oldHourlyPrice != 0 ? 8 : 12,
                               ),
-                              allCars.data!.cars[index].dailyPrice == -1 ?
-                              Center() :
+                              introductionController.allCars!.data!.cars[index].dailyPrice == -1 ?
+                              const Center() :
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Row(
                                     children: [
                                       TextApp(
-                                          text: " AED " + allCars.data!.cars[index].dailyPrice.toString(),
+                                          text: " AED " + introductionController.allCars!.data!.cars[index].dailyPrice.toString(),
                                           textStyle: CommonTextStyle.textStyleForMediumWhiteNormal
                                       ),
-                                      Text(" Day",
-                                        style: TextStyle(
+                                      Text(" "+App_Localization.of(context).translate("day"),
+                                        style: const TextStyle(
                                             color: App.lightGrey,
                                             fontSize: CommonTextStyle.mediumTextStyle,
                                             fontStyle: FontStyle.italic
@@ -518,24 +671,24 @@ class Home extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: allCars.data!.cars[index].oldDailyPrice == 0 ? 0 : 5),
-                                  allCars.data!.cars[index].oldDailyPrice == 0 ?
-                                  Center() :
+                                  SizedBox(height: introductionController.allCars!.data!.cars[index].oldDailyPrice == 0 ? 0 : 5),
+                                  introductionController.allCars!.data!.cars[index].oldDailyPrice == 0 ?
+                                  const Center() :
                                   Row(
                                     children: [
                                       TextApp(
-                                        text: " AED " + allCars.data!.cars[index].oldDailyPrice.toString(),
-                                        textStyle: TextStyle(
+                                        text: " AED " + introductionController.allCars!.data!.cars[index].oldDailyPrice.toString(),
+                                        textStyle: const TextStyle(
                                           decoration: TextDecoration.lineThrough,
                                           decorationColor: Colors.red,
                                           color: App.lightGrey,
                                           fontSize: CommonTextStyle.smallTextStyle,
                                         ),
                                       ),
-                                      SizedBox(width: 5,),
+                                      const SizedBox(width: 5,),
                                       TextApp(
-                                        text: ((100 - (allCars.data!.cars[index].dailyPrice * 100)/allCars.data!.cars[index].oldDailyPrice).round().toString()) + " % " +" OFF",
-                                        textStyle: TextStyle(
+                                        text: ((100 - (introductionController.allCars!.data!.cars[index].dailyPrice * 100)/introductionController.allCars!.data!.cars[index].oldDailyPrice).round().toString()) + " % " +" OFF",
+                                        textStyle: const TextStyle(
                                             color: Colors.green,
                                             fontSize: CommonTextStyle.smallTextStyle,
                                             fontStyle: FontStyle.italic
@@ -569,7 +722,7 @@ class Home extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(horizontal: 0),
                                       child: ImageAndText(
                                           child1: Icon(Icons.whatsapp,color: Colors.green,size: 14,),
-                                          text: "Whatsapp",
+                                          text: "whatsapp",
                                           textStyle:  CommonTextStyle.textStyleForTinyWhiteNormal
                                       ),
                                     )
@@ -583,14 +736,14 @@ class Home extends StatelessWidget {
                                 },
                                 child: Container(
                                     width: App.getDeviceWidthPercent(92, context) / 5,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: App.grey,
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 0),
                                       child: ImageAndText(
-                                          child1: Icon(Icons.call,color: Colors.red,size: 14,),
-                                          text: "Call",
+                                          child1: const Icon(Icons.call,color: Colors.red,size: 14,),
+                                          text: "call",
                                           textStyle:  CommonTextStyle.textStyleForTinyWhiteNormal
                                       ),
                                     )
@@ -598,19 +751,19 @@ class Home extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Get.to(()=>ProductDetails(allCars.data!.cars[index].id));
+                                  Get.to(()=>ProductDetails(introductionController.allCars!.data!.cars[index].id));
                                   homeController.selectNavDrawer.value = 0;
                                 },
                                 child: Container(
                                     width: App.getDeviceWidthPercent(92, context) / 5,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: App.grey,
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 0),
                                       child: ImageAndText(
-                                          child1: Icon(Icons.info_outline,color: Colors.orange,size: 14,),
-                                          text: "Details",
+                                          child1: const Icon(Icons.info_outline,color: Colors.orange,size: 14,),
+                                          text: "detail",
                                           textStyle:  CommonTextStyle.textStyleForTinyWhiteNormal
                                       ),
                                     )
@@ -618,11 +771,23 @@ class Home extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  ///book page
+                                  Navigator.of(context).push(PageRouteBuilder(
+                                    pageBuilder: (context, animation, secondaryAnimation) => Book(),
+                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                      const begin = Offset(1.0,0.0);
+                                      const end = Offset.zero;
+                                      const curve = Curves.easeInOut;
+                                      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                      return SlideTransition(
+                                        position: animation.drive(tween),
+                                        child: child,
+                                      );
+                                    },
+                                  ));
                                 },
                                 child: Container(
                                     width: App.getDeviceWidthPercent(92, context) / 4,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                         color: App.grey,
                                         borderRadius: BorderRadius.only(
                                             bottomRight: Radius.circular(15)
@@ -638,7 +803,7 @@ class Home extends StatelessWidget {
                                             option: 0,
                                             color: App.orange,
                                           ),
-                                          text: "Book",
+                                          text: "book",
                                           textStyle:  CommonTextStyle.textStyleForTinyWhiteNormal
                                       ),
                                     )
@@ -676,14 +841,14 @@ class Home extends StatelessWidget {
                 onPageChanged: (index, reason) {
                   homeController.setIndex(index);
                 }),
-            itemCount: allCars.data!.cars[index].imgs.split(",").length,
+            itemCount: introductionController.allCars!.data!.cars[index].imgs.split(",").length,
             itemBuilder: (BuildContext context, int photoIndex, int realIndex) {
               return Container(
                 width: App.getDeviceWidthPercent(100, context),
                 decoration:BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     image: DecorationImage(
-                        image: NetworkImage(API.url + "/" + allCars.data!.cars[index].imgs.split(",")[photoIndex]),
+                        image: NetworkImage(API.url + "/" + introductionController.allCars!.data!.cars[index].imgs.split(",")[photoIndex]),
                         fit: BoxFit.cover
                     )
                 ),

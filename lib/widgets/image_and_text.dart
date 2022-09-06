@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:luxury_version_1/app_localization.dart';
 import 'package:luxury_version_1/widgets/text_app.dart';
 
 
@@ -21,7 +22,7 @@ class ImageAndText extends StatelessWidget {
       children: [
         child1,
         SizedBox(width: 5),
-        TextApp(text: text,
+        TextApp(text: App_Localization.of(context).translate(text),
             textStyle: textStyle
         ),
       ],

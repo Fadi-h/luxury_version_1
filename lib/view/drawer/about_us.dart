@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:luxury_version_1/app_localization.dart';
 import 'package:luxury_version_1/controller/about_us_controller.dart';
 import 'package:luxury_version_1/controller/home_controller.dart';
 import 'package:luxury_version_1/controller/introduction_controller.dart';
+import 'package:luxury_version_1/helper/api.dart';
 import 'package:luxury_version_1/helper/app.dart';
-import 'package:luxury_version_1/widgets/container_with_image.dart';
+import 'package:luxury_version_1/helper/global.dart';
 import 'package:luxury_version_1/widgets/drawer.dart';
 import 'package:luxury_version_1/widgets/footer.dart';
 import 'package:luxury_version_1/widgets/text_app.dart';
@@ -24,7 +26,7 @@ class AboutUs extends StatelessWidget {
     return Scaffold(
         key: aboutUsController.key,
         drawer: CustomDrawer(homeController: homeController),
-        body: Obx(() => Stack(
+        body: Stack(
           children: [
             Container(
               width: App.getDeviceWidthPercent(100, context),
@@ -33,7 +35,7 @@ class AboutUs extends StatelessWidget {
             ),
             about(context),
           ],
-        ))
+        )
     );
   }
 
@@ -41,9 +43,7 @@ class AboutUs extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: MediaQuery.of(context).viewPadding.top,),
           header(context),
-          SizedBox(height: 15),
           body(context),
           SizedBox(height: 20),
           Footer(introductionController: introductionController)
@@ -90,182 +90,177 @@ class AboutUs extends StatelessWidget {
     );
   }
   body(BuildContext context) {
-    return Column(
-      children: [
-        TitleAndDescription(
-          text1: "LUXURY RENTAL CAR",
-          text2: "Luxury Rental Car Company Specializes In Cars Of The Premium Segment. We Know How To Please A Demanding Client And How To Provide Rental Services Of The Highest Quality.Being Our Client, You Will Feel A Superb Level Of Luxury And Comfort.",
-          textAlign: TextAlign.center,
-          textStyle1: const TextStyle(
-            height: 1.3,
-            letterSpacing: 1,
-            fontSize: CommonTextStyle.xXlargeTextStyle,
-            color: App.orange,
-            fontWeight: FontWeight.bold,
-          ),
-          textStyle2: const TextStyle(
-              letterSpacing: 0.3,
-              height: 1.3,
-              fontSize: CommonTextStyle.smallTextStyle,
-              color: App.lightGrey,
-              fontWeight: FontWeight.normal
-          ),
-          width1: 90,
-          width2: 85,
-        ),
-        SizedBox(height: 15),
-        ContainerWithImage(
-            width: App.getDeviceWidthPercent(100, context),
-            height: App.getDeviceHeightPercent(25, context),
-            image: "assets/images/about.png",
-            option: 1
-        ),
-        Container(
-          width: App.getDeviceWidthPercent(90, context),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Container(
+      child: ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: introductionController.aboutUs!.data!.about.length,
+        shrinkWrap: true,
+        itemBuilder: (context,index) {
+          return Column(
             children: [
-              GestureDetector(
-                onTap: () {
-                  aboutUsController.selected.value = 0 ;
-                },
-                child: Container(
-                  width: App.getDeviceWidthPercent(40, context),
-                  padding: EdgeInsets.only(bottom: 5),
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                            color: aboutUsController.selected.value == 0 ? App.orange : Colors.transparent,
-                          )
-                      )
-                  ),
-                  child: Center(
-                    child: Text( "Why Choose Us?",
-                      style: TextStyle(
-                        height: 1.3,
-                        letterSpacing: 0.3,
-                        color: App.orange,
-                        fontSize: CommonTextStyle.mediumTextStyle,
-                        fontWeight: FontWeight.w500,
+              TitleAndDescription(
+                text1: Global.languageCode == "en" ?
+                introductionController.aboutUs!.data!.about[index].titleEn :
+                introductionController.aboutUs!.data!.about[index].titleAr,
+                width1: 90,
+              ),
+              SizedBox(height: 20),
+              Container(
+                width: App.getDeviceWidthPercent(100, context),
+                height: App.getDeviceHeightPercent(25, context),
+                child: Image.network(API.url + "/" + introductionController.aboutUs!.data!.about[index].cover
+                  , fit: BoxFit.cover),
+              ),
+              SizedBox(height: 20),
+              Container(
+                width: App.getDeviceWidthPercent(90, context),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Obx(() => GestureDetector(
+                      onTap: () {
+                        aboutUsController.selected.value = 0 ;
+                      },
+                      child: Container(
+                        width: App.getDeviceWidthPercent(40, context),
+                        padding: EdgeInsets.only(bottom: 5),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                  color: aboutUsController.selected.value == 0 ? App.orange : Colors.transparent,
+                                )
+                            )
+                        ),
+                        child: Center(
+                          child: Text(App_Localization.of(context).translate("why_choose_us_title"),
+                            style: TextStyle(
+                              height: 1.3,
+                              letterSpacing: 0.3,
+                              color: App.orange,
+                              fontSize: CommonTextStyle.mediumTextStyle,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    ),),
+                    Obx(() => GestureDetector(
+                      onTap: () {
+                        aboutUsController.selected.value = 1;
+                      },
+                      child: Container(
+                        width: App.getDeviceWidthPercent(40, context),
+                        padding: EdgeInsets.only(bottom: 5),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: aboutUsController.selected.value != 0 ? App.orange : Colors.transparent
+                                )
+                            )
+                        ),
+                        child: Center(
+                          child: Text(App_Localization.of(context).translate("what_do_we_offer_title"),
+                            style: TextStyle(
+                              height: 1.3,
+                              letterSpacing: 0.3,
+                              color: App.orange,
+                              fontSize: CommonTextStyle.mediumTextStyle,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ))
+                  ],
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  aboutUsController.selected.value = 1;
-                },
-                child: Container(
-                  width: App.getDeviceWidthPercent(40, context),
-                  padding: EdgeInsets.only(bottom: 5),
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              color: aboutUsController.selected.value != 0 ? App.orange : Colors.transparent
-                          )
-                      )
-                  ),
-                  child: Center(
-                    child: Text( "What Do We Offer?",
-                      style: TextStyle(
-                        height: 1.3,
-                        letterSpacing: 0.3,
-                        color: App.orange,
-                        fontSize: CommonTextStyle.mediumTextStyle,
-                        fontWeight: FontWeight.w500,
-                      ),
+              SizedBox(height: 20),
+              Container(
+                width: App.getDeviceWidthPercent(85, context),
+                child: aboutUsController.selected.value == 0 ?
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SvgPicture.asset("assets/icons/checkbox.svg",color: App.lightGrey,width: 25,height: 25,),
+                        TextApp(
+                            width: App.getDeviceWidthPercent(75, context),
+                            text: App_Localization.of(context).translate("why_choose_us_content"),
+                            textStyle: TextStyle(
+                                height: 1.3,
+                                color: App.lightGrey,
+                                fontSize: CommonTextStyle.smallTextStyle,
+                                letterSpacing: 0.3
+                            )
+                        )
+                      ],
                     ),
-                  ),
+                    SizedBox(height: 15,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SvgPicture.asset("assets/icons/checkbox.svg",color: App.lightGrey,width: 25,height: 25,),
+                        TextApp(
+                            width: App.getDeviceWidthPercent(75, context),
+                            text: App_Localization.of(context).translate("why_choose_us_content"),
+                            textStyle: TextStyle(
+                                height: 1.3,
+                                color: App.lightGrey,
+                                fontSize: CommonTextStyle.smallTextStyle,
+                                letterSpacing: 0.3
+                            )
+                        )
+                      ],
+                    ),
+                  ],
+                ) :
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SvgPicture.asset("assets/icons/checkbox.svg",color: App.lightGrey,width: 25,height: 25,),
+                        TextApp(
+                            width: App.getDeviceWidthPercent(75, context),
+                            text: App_Localization.of(context).translate("what_do_we_offer_content"),
+                            textStyle: TextStyle(
+                                height: 1.3,
+                                color: App.lightGrey,
+                                fontSize: CommonTextStyle.smallTextStyle,
+                                letterSpacing: 0.3
+                            )
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 15,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SvgPicture.asset("assets/icons/checkbox.svg",color: App.lightGrey,width: 25,height: 25,),
+                        TextApp(
+                            width: App.getDeviceWidthPercent(75, context),
+                            text: App_Localization.of(context).translate("what_do_we_offer_content"),
+                            textStyle: TextStyle(
+                                height: 1.3,
+                                color: App.lightGrey,
+                                fontSize: CommonTextStyle.smallTextStyle,
+                                letterSpacing: 0.3
+                            )
+                        )
+                      ],
+                    ),
+                  ],
                 ),
-              )
-            ],
-          ),
-        ),
-        SizedBox(height: 30),
-        Container(
-          width: App.getDeviceWidthPercent(85, context),
-          child: aboutUsController.selected.value == 0 ?
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SvgPicture.asset("assets/icons/checkbox.svg",color: App.lightGrey,width: 25,height: 25,),
-                  TextApp(
-                      width: App.getDeviceWidthPercent(75, context),
-                      text: aboutUsController.whyChooseUs1,
-                      textStyle: TextStyle(
-                          height: 1.3,
-                          color: App.lightGrey,
-                          fontSize: CommonTextStyle.smallTextStyle,
-                          letterSpacing: 0.3
-                      )
-                  )
-                ],
-              ),
-              SizedBox(height: 15,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SvgPicture.asset("assets/icons/checkbox.svg",color: App.lightGrey,width: 25,height: 25,),
-                  TextApp(
-                      width: App.getDeviceWidthPercent(75, context),
-                      text: aboutUsController.whyChooseUs2,
-                      textStyle: TextStyle(
-                          height: 1.3,
-                          color: App.lightGrey,
-                          fontSize: CommonTextStyle.smallTextStyle,
-                          letterSpacing: 0.3
-                      )
-                  )
-                ],
               ),
             ],
-          ) :
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SvgPicture.asset("assets/icons/checkbox.svg",color: App.lightGrey,width: 25,height: 25,),
-                  TextApp(
-                      width: App.getDeviceWidthPercent(75, context),
-                      text: aboutUsController.whatDoWeOffer1,
-                      textStyle: TextStyle(
-                          height: 1.3,
-                          color: App.lightGrey,
-                          fontSize: CommonTextStyle.smallTextStyle,
-                          letterSpacing: 0.3
-                      )
-                  )
-                ],
-              ),
-              SizedBox(height: 15,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SvgPicture.asset("assets/icons/checkbox.svg",color: App.lightGrey,width: 25,height: 25,),
-                  TextApp(
-                      width: App.getDeviceWidthPercent(75, context),
-                      text: aboutUsController.whatDoWeOffer2,
-                      textStyle: TextStyle(
-                          height: 1.3,
-                          color: App.lightGrey,
-                          fontSize: CommonTextStyle.smallTextStyle,
-                          letterSpacing: 0.3
-                      )
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
+          );
+        },
+      ),
     );
   }
 }

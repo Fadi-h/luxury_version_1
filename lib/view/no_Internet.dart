@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:luxury_version_1/app_localization.dart';
 import 'package:luxury_version_1/helper/api.dart';
 import 'package:luxury_version_1/helper/app.dart';
 
@@ -30,7 +31,7 @@ class NoInternet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Center(
-                        child: Text("No Internet Connection",
+                        child: Text(App_Localization.of(context).translate("no_internet_connection"),
                           style: TextStyle(
                             fontSize: CommonTextStyle.bigTextStyle,
                             color: App.field,
@@ -43,7 +44,7 @@ class NoInternet extends StatelessWidget {
                 ),
               ),
               Center(
-                  child: Text("please try again",
+                  child: Text(App_Localization.of(context).translate("please_try_again"),
                     style: TextStyle(
                         fontSize: CommonTextStyle.mediumTextStyle,
                         color: App.field,

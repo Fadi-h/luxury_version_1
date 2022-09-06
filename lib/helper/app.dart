@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:luxury_version_1/app_localization.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -45,12 +46,12 @@ class App{
   }
 
   static normalTextField({required BuildContext context,required String text, required TextStyle textStyle,required double width,
-    required double height, required TextAlignVertical textAlignVertical,required TextEditingController controller,
+    double? height, TextAlignVertical? textAlignVertical,required TextEditingController controller,
     required String hintText,required TextStyle hintStyle, required bool validate,required String errorText}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(text,style: textStyle),
+        Text(App_Localization.of(context).translate(text),style: textStyle),
         SizedBox(height: 10),
         Container(
           width: width,
@@ -63,7 +64,7 @@ class App{
             decoration: InputDecoration(
                 filled: true,
                 fillColor: App.textField,
-                hintText: hintText,
+                hintText: App_Localization.of(context).translate(hintText),
                 hintStyle: hintStyle,
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -98,6 +99,7 @@ abstract class CommonTextStyle {
   static const xlargeTextStyle = 22.0;
   static const xXlargeTextStyle = 26.0;
   static const headerIcons = 30.0;
+
 
   /// white
 

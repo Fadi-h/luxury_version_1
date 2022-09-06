@@ -4,11 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:luxury_version_1/helper/app.dart';
+import 'package:luxury_version_1/app_localization.dart';
 import 'package:luxury_version_1/helper/global.dart';
 import 'package:luxury_version_1/view/introduction.dart';
 
 
-/// new
+/// 6/9/2022
 void main() {
   runApp( MyApp());
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle());
@@ -19,13 +20,33 @@ class MyApp extends StatefulWidget {
 
   @override
   State<MyApp> createState() => _MyAppState();
+
+  static void setLocale(BuildContext context, Locale locale) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state!.setLocale(locale);
+  }
+
 }
 
 class _MyAppState extends State<MyApp> {
 
+  Locale? _locale;
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+      Get.updateLocale(locale);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    Global.loadLanguage().then((language) {
+      setState(() {
+        _locale = Locale(language);
+        Get.updateLocale(Locale(language));
+      });
+    });
   }
 
 
@@ -53,6 +74,22 @@ class _MyAppState extends State<MyApp> {
             valueIndicatorColor: App.orange,
           ),
         ),
+        locale: _locale,
+        supportedLocales: const [Locale('en', ''), Locale('ar', '')],
+        localizationsDelegates: const [
+          App_Localization.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        localeResolutionCallback: (local, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == local!.languageCode) {
+              return supportedLocale;
+            }
+          }
+          return supportedLocales.first;
+        },
         home: Introduction()
     );
   }

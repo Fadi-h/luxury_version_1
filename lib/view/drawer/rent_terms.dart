@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:luxury_version_1/app_localization.dart';
 import 'package:luxury_version_1/controller/home_controller.dart';
 import 'package:luxury_version_1/controller/introduction_controller.dart';
 import 'package:luxury_version_1/controller/rent_terms_controller.dart';
 import 'package:luxury_version_1/helper/app.dart';
+import 'package:luxury_version_1/helper/global.dart';
+import 'package:luxury_version_1/widgets/container_with_image.dart';
 import 'package:luxury_version_1/widgets/drawer.dart';
 import 'package:luxury_version_1/widgets/footer.dart';
-import 'package:luxury_version_1/widgets/title_and_description.dart';
-
 
 
 class RentTerms extends StatelessWidget {
@@ -25,10 +27,11 @@ class RentTerms extends StatelessWidget {
         drawer: CustomDrawer(homeController: homeController),
         body: Stack(
           children: [
-            Container(
-              width: App.getDeviceWidthPercent(100, context),
-              height: App.getDeviceHeightPercent(100, context),
-              color: App.darkGrey,
+            ContainerWithImage(
+                width: App.getDeviceWidthPercent(100, context),
+                height: App.getDeviceHeightPercent(100, context),
+                image: "assets/images/bg-terms.png",
+                option: 1
             ),
             rentTerms(context),
           ],
@@ -40,9 +43,27 @@ class RentTerms extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: MediaQuery.of(context).viewPadding.top,),
           header(context),
           SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: App.getDeviceWidthPercent(90, context),
+                child: Text(App_Localization.of(context).translate("rent_terms").toUpperCase(),
+                  style: TextStyle(
+                    letterSpacing: 1,
+                    height: 1.3,
+                    fontSize: CommonTextStyle.xXlargeTextStyle,
+                    color: App.orange,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 30),
           body(context),
           SizedBox(height: 20),
           Footer(introductionController: introductionController)
@@ -90,100 +111,54 @@ class RentTerms extends StatelessWidget {
     );
   }
   body(BuildContext context) {
-    return Column(
-      children: [
-        TitleAndDescription(
-        text1: "RENTAL TERMS",
-        text2: "",
-        textAlign: TextAlign.center,
-        textStyle1: const TextStyle(
-          letterSpacing: 1,
-          height: 1.3,
-          fontSize: CommonTextStyle.xXlargeTextStyle,
-          color: App.orange,
-          fontWeight: FontWeight.bold,
-        ),
-        textStyle2: const TextStyle(
-            letterSpacing: 0.3,
-            height: 1.3,
-            fontSize: CommonTextStyle.smallTextStyle,
-            color: App.field,
-            fontWeight: FontWeight.normal
-        ),
-        width1: 90,
-        width2: 85,
+    return Container(
+      width: App.getDeviceWidthPercent(90, context),
+      child: ListView.builder(
+          itemCount: introductionController.terms!.data!.terms.length,
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (context , index) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: App.getDeviceWidthPercent(85, context),
+                  child: Html(
+                    data: Global.languageCode == "en" ?
+                    introductionController.terms!.data!.terms[index].titleEn :
+                    introductionController.terms!.data!.terms[index].titleAr,
+                    style: {
+                      "body": Style(
+                          fontSize: FontSize(CommonTextStyle.xXlargeTextStyle),
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                          color: App.orange,
+                          textAlign: TextAlign.start
+                      ),
+                    },
+                  ),
+                ),
+                Container(
+                  width: App.getDeviceWidthPercent(85, context),
+                  child: Html(
+                    data: Global.languageCode == "en" ?
+                    introductionController.terms!.data!.terms[index].descriptionEn :
+                    introductionController.terms!.data!.terms[index].descriptionAr,
+                    style: {
+                      "body": Style(
+                          fontSize: FontSize(CommonTextStyle.mediumTextStyle),
+                          fontWeight: FontWeight.normal,
+                          letterSpacing: 0.3,
+                          color: App.lightGrey,
+                          textAlign: TextAlign.start
+                      ),
+                    },
+                  ),
+                ),
+              ],
+            );
+          }
       ),
-        SizedBox(height: 15),
-        Column(
-          children: [
-            TitleAndDescription(
-              text1: "Delivery And Return",
-              text2: "Luxury Rental Car Company Specializes In Cars Of The Premium Segment. We Know How To Please A Demanding Client And How To Provide Rental Services Of The Highest Quality. Being Our Client, You Will Feel A Superb Level Of Luxury And Comfort.",
-              textAlign: TextAlign.start,
-              textStyle1: const TextStyle(
-                letterSpacing: 1,
-                height: 1.3,
-                fontSize: CommonTextStyle.largeTextStyle,
-                color: App.orange,
-                fontWeight: FontWeight.bold,
-              ),
-              textStyle2: const TextStyle(
-                  letterSpacing: 0.3,
-                  height: 1.3,
-                  fontSize: CommonTextStyle.smallTextStyle,
-                  color: App.lightGrey,
-                  fontWeight: FontWeight.normal
-              ),
-              width1: 90,
-              width2: 90,
-            ),
-            SizedBox(height: 30),
-            TitleAndDescription(
-              text1: "Damage, Loss, Theft Etc",
-              text2: "Luxury Rental Car Company Specializes In Cars Of The Premium Segment. We Know How To Please A Demanding Client And How To Provide Rental Services Of The Highest Quality. Being Our Client, You Will Feel A Superb Level Of Luxury And Comfort.",
-              textAlign: TextAlign.start,
-              textStyle1: const TextStyle(
-                letterSpacing: 1,
-                height: 1.3,
-                fontSize: CommonTextStyle.largeTextStyle,
-                color: App.orange,
-                fontWeight: FontWeight.bold,
-              ),
-              textStyle2: const TextStyle(
-                  letterSpacing: 0.3,
-                  height: 1.3,
-                  fontSize: CommonTextStyle.smallTextStyle,
-                  color: App.lightGrey,
-                  fontWeight: FontWeight.normal
-              ),
-              width1: 90,
-              width2: 90,
-            ),
-            SizedBox(height: 30),
-            TitleAndDescription(
-              text1: "Changes",
-              text2: "Luxury Rental Car Company Specializes In Cars Of The Premium Segment. We Know How To Please A Demanding Client And How To Provide Rental Services Of The Highest Quality. Being Our Client, You Will Feel A Superb Level Of Luxury And Comfort.",
-              textAlign: TextAlign.start,
-              textStyle1: const TextStyle(
-                letterSpacing: 1,
-                height: 1.3,
-                fontSize: CommonTextStyle.largeTextStyle,
-                color: App.orange,
-                fontWeight: FontWeight.bold,
-              ),
-              textStyle2: const TextStyle(
-                  letterSpacing: 0.3,
-                  height: 1.3,
-                  fontSize: CommonTextStyle.smallTextStyle,
-                  color: App.lightGrey,
-                  fontWeight: FontWeight.normal
-              ),
-              width1: 90,
-              width2: 90,
-            ),
-          ],
-        )
-      ],
     );
   }
 }

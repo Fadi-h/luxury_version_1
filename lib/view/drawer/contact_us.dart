@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:luxury_version_1/app_localization.dart';
 import 'package:luxury_version_1/controller/contact_us_controller.dart';
 import 'package:luxury_version_1/controller/home_controller.dart';
 import 'package:luxury_version_1/controller/introduction_controller.dart';
@@ -10,7 +11,6 @@ import 'package:luxury_version_1/widgets/custom_button.dart';
 import 'package:luxury_version_1/widgets/drawer.dart';
 import 'package:luxury_version_1/widgets/footer.dart';
 import 'package:luxury_version_1/widgets/text_app.dart';
-import 'package:luxury_version_1/widgets/title_and_description.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -45,9 +45,27 @@ class ContactUs extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: MediaQuery.of(context).viewPadding.top,),
           header(context),
           SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: App.getDeviceWidthPercent(90, context),
+                child: Text(App_Localization.of(context).translate("contact_us").toUpperCase(),
+                  style: TextStyle(
+                    letterSpacing: 1,
+                    height: 1.3,
+                    fontSize: CommonTextStyle.xXlargeTextStyle,
+                    color: App.orange,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 30),
           body(context),
           SizedBox(height: 20),
           Footer(introductionController: introductionController)
@@ -96,47 +114,23 @@ class ContactUs extends StatelessWidget {
   body(BuildContext context) {
     return Column(
       children: [
-        title(context),
         textFields(context),
         SizedBox(height: 30,),
         locationCallWhatsapp(context),
         SizedBox(height: 30,),
         Center(
           child: TextApp(
-              text: "WE ARE ON SOCIAL NETWORKS",
+              text: App_Localization.of(context).translate("we_are_on_social_networks").toUpperCase(),
               textStyle: TextStyle(
                 fontSize: CommonTextStyle.mediumTextStyle,
                 color: Colors.white.withOpacity(0.5)
               )
           ),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 30),
         socialMedia(context),
         SizedBox(height: 20),
       ],
-    );
-  }
-  title(BuildContext context) {
-    return TitleAndDescription(
-      text1: "CONTACT US",
-      text2: "",
-      textAlign: TextAlign.center,
-      textStyle1: const TextStyle(
-        letterSpacing: 1,
-        height: 1.3,
-        fontSize: CommonTextStyle.xXlargeTextStyle,
-        color: App.orange,
-        fontWeight: FontWeight.bold,
-      ),
-      textStyle2: const TextStyle(
-          letterSpacing: 0.3,
-          height: 1.3,
-          fontSize: CommonTextStyle.smallTextStyle,
-          color: App.field,
-          fontWeight: FontWeight.normal
-      ),
-      width1: 90,
-      width2: 85,
     );
   }
   textFields(BuildContext context) {
@@ -148,9 +142,9 @@ class ContactUs extends StatelessWidget {
       ),
       child: Column(
         children: [
-          SizedBox(height: App.getDeviceHeightPercent(3, context)),
+          SizedBox(height: 20),
           Center(
-            child: Text("Do You Need Help With Choosing A Car?",
+            child: Text(App_Localization.of(context).translate("need_help_with_choosing_car?"),
               style: TextStyle(
                   fontSize: CommonTextStyle.tinyTextStyle,
                   color: Colors.white
@@ -160,55 +154,55 @@ class ContactUs extends StatelessWidget {
           SizedBox(height: 15),
           App.normalTextField(
             context: context,
-            text: "NAME",
+            text: "name",
             textStyle: CommonTextStyle.textStyleForMediumWhiteNormal,
             width: App.getDeviceWidthPercent(80, context),
-            height: App.getDeviceHeightPercent(8.5, context),
+            // height: App.getDeviceHeightPercent(8.5, context),
             controller: contactUsController.name,
             validate: contactUsController.nameValidate.value,
-            textAlignVertical: contactUsController.nameValidate.value ? TextAlignVertical.bottom : TextAlignVertical.center,
-            hintText: "Enter Name",
+            // textAlignVertical: contactUsController.nameValidate.value ? TextAlignVertical.bottom : TextAlignVertical.center,
+            hintText: "enter_name",
             hintStyle: TextStyle(
                 color: Colors.white.withOpacity(0.3),
                 fontSize: CommonTextStyle.mediumTextStyle
             ),
-            errorText: "This value is required",
+            errorText: App_Localization.of(context).translate("this_field_is_required"),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 10),
           App.normalTextField(
             context: context,
-            text: "EMAIL",
+            text: "email",
             textStyle: CommonTextStyle.textStyleForMediumWhiteNormal,
             width: App.getDeviceWidthPercent(80, context),
-            height: App.getDeviceHeightPercent(8.5, context),
+            // height: App.getDeviceHeightPercent(8.5, context),
             controller: contactUsController.email,
             validate: contactUsController.emailValidate.value,
-            textAlignVertical: contactUsController.emailValidate.value ? TextAlignVertical.bottom : TextAlignVertical.center,
-            hintText: "Enter Email",
+            // textAlignVertical: contactUsController.emailValidate.value ? TextAlignVertical.bottom : TextAlignVertical.center,
+            hintText: "enter_email",
             hintStyle: TextStyle(
                 color: Colors.white.withOpacity(0.3),
                 fontSize: CommonTextStyle.mediumTextStyle
             ),
-            errorText: "This value is required",
+            errorText: App_Localization.of(context).translate("this_field_is_required"),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("PHONE",style: CommonTextStyle.textStyleForMediumWhiteNormal,),
+              Text(App_Localization.of(context).translate("phone"),style: CommonTextStyle.textStyleForMediumWhiteNormal,),
               SizedBox(height: 10),
               Container(
                   width: App.getDeviceWidthPercent(80, context),
-                  height: App.getDeviceHeightPercent(contactUsController.phoneValidate.value ? 8.5 : 9, context),
+                  // height: App.getDeviceHeightPercent(contactUsController.phoneValidate.value ? 8.5 : 9, context),
                   child: IntlPhoneField(
                     style: CommonTextStyle.textStyleForMediumWhiteNormal,
                     controller: contactUsController.phone,
                     cursorColor: Colors.white,
-                    textAlignVertical: contactUsController.phoneValidate.value ? TextAlignVertical.bottom : TextAlignVertical.center,
+                    // textAlignVertical: contactUsController.phoneValidate.value ? TextAlignVertical.bottom : TextAlignVertical.center,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: App.textField,
-                      hintText: "Enter Phone",
+                      hintText: App_Localization.of(context).translate("enter_phone"),
                       hintStyle:  TextStyle(
                           color: Colors.white.withOpacity(0.3),
                           fontSize: CommonTextStyle.mediumTextStyle
@@ -225,7 +219,7 @@ class ContactUs extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide(color: App.textField)
                       ),
-                      errorText: contactUsController.phoneValidate.value ? "This value is required" : null,
+                      errorText: contactUsController.phoneValidate.value ? App_Localization.of(context).translate("this_field_is_required") : null,
                     ),
                     initialCountryCode: 'AE',
                     disableLengthCheck: true,
@@ -234,7 +228,7 @@ class ContactUs extends StatelessWidget {
                         color: Colors.white,
                         fontSize: CommonTextStyle.mediumTextStyle
                     ),
-                    flagsButtonMargin: const EdgeInsets.only(left: 15),
+                    flagsButtonMargin: const EdgeInsets.symmetric(horizontal: 15),
                     showDropdownIcon: true,
                     dropdownIconPosition: IconPosition.trailing,
                     onChanged: (phone) {
@@ -244,15 +238,15 @@ class ContactUs extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("MESSAGE",style: CommonTextStyle.textStyleForMediumWhiteNormal,),
+              Text(App_Localization.of(context).translate("message"),style: CommonTextStyle.textStyleForMediumWhiteNormal,),
               SizedBox(height: 10),
               Container(
                 width: App.getDeviceWidthPercent(80, context),
-                height: App.getDeviceHeightPercent(13, context),
+                // height: App.getDeviceHeightPercent(13, context),
                 child: TextField(
                   textAlignVertical: TextAlignVertical.top,
                   style: CommonTextStyle.textStyleForMediumWhiteNormal,
@@ -261,7 +255,7 @@ class ContactUs extends StatelessWidget {
                   decoration: InputDecoration(
                       filled: true,
                       fillColor: App.textField,
-                      hintText: "Enter Message",
+                      hintText: App_Localization.of(context).translate("enter_message"),
                       hintStyle: TextStyle(
                           color: Colors.white.withOpacity(0.3),
                           fontSize: CommonTextStyle.mediumTextStyle
@@ -278,17 +272,17 @@ class ContactUs extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide(color: App.textField)
                       ),
-                      contentPadding: EdgeInsets.only(top: 15,bottom: 70,left: 15)
+                      contentPadding: EdgeInsets.only(top: 15,bottom: 70,left: 15,right: 15)
                   ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: App.getDeviceHeightPercent(3, context)),
+          SizedBox(height: 30),
           CustomButton(
             width: App.getDeviceWidthPercent(80, context),
             height: App.getDeviceHeightPercent(7, context),
-            text: "SEND",
+            text: App_Localization.of(context).translate("send").toUpperCase(),
             onPressed: () {
               contactUsController.send(context, contactUsController.name.text,contactUsController.email.text,
                   contactUsController.phone.text);
@@ -297,7 +291,7 @@ class ContactUs extends StatelessWidget {
             borderRadius: 20,
             textStyle: CommonTextStyle.textStyleForBigWhiteNormal,
           ),
-          SizedBox(height: App.getDeviceHeightPercent(3, context)),
+          SizedBox(height: 20),
         ],
       ),
     );

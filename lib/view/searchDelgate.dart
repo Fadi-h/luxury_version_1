@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:luxury_version_1/app_localization.dart';
 import 'package:luxury_version_1/controller/introduction_controller.dart';
 import 'package:luxury_version_1/helper/api.dart';
 import 'package:luxury_version_1/helper/app.dart';
@@ -78,9 +79,9 @@ class SearchTextField extends SearchDelegate<String> {
           color: App.field,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text("No results matched",
-                style:TextStyle(
+            children: [
+              Text(App_Localization.of(context).translate("no_results_matched"),
+                style: const TextStyle(
                   fontSize: CommonTextStyle.mediumTextStyle,
                   color: App.orange,
                   fontWeight: FontWeight.normal,

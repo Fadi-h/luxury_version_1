@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-class Brands {
-  Brands({
+class AllBrands {
+  AllBrands({
     required this.code,
     required this.message,
     required this.brand,
@@ -11,29 +11,29 @@ class Brands {
   String message;
   Brand brand;
 
-  factory Brands.fromJson(String str) => Brands.fromMap(json.decode(str));
+  factory AllBrands.fromJson(String str) => AllBrands.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory Brands.fromMap(Map<String, dynamic> json) => Brands(
+  factory AllBrands.fromMap(Map<String, dynamic> json) => AllBrands(
     code: json["code"] == null ? -1 : json["code"],
     message: json["message"] == null ? "" : json["message"],
-    brand: Brand.fromMap(json["brand"]),
+    brand: Brand.fromMap(json["data"]),
   );
 
   Map<String, dynamic> toMap() => {
     "code": code == null ? null : code,
     "message": message == null ? null : message,
-    "brand": brand == null ? null : brand.toJson(),
+    "data": brand == null ? null : brand.toJson(),
   };
 }
 
 class Brand {
   Brand({
-    required this.brandInfo,
+    required this.brands,
   });
 
-  List<BrandInfo>? brandInfo;
+  List<BrandInfo>? brands;
 
 
   factory Brand.fromJson(String str) => Brand.fromMap(json.decode(str));
@@ -41,26 +41,34 @@ class Brand {
   String toJson() => json.encode(toMap());
 
   factory Brand.fromMap(Map<String, dynamic> json) => Brand(
-    brandInfo: json["brand_Info"] == null ? null : List<BrandInfo>.from(json["brand_Info"].map((x) => BrandInfo.fromMap(x))),
+    brands: json["brands"] == null ? null : List<BrandInfo>.from(json["brands"].map((x) => BrandInfo.fromMap(x))),
   );
 
   Map<String, dynamic> toMap() => {
-    "brand_Info": List<dynamic>.from(brandInfo!.map((x) => x.toJson())),
+    "brands": List<dynamic>.from(brands!.map((x) => x.toJson())),
   };
 }
 
 class BrandInfo {
   BrandInfo({
     required this.id,
-    required this.name,
-    required this.titleEn,
-    required this.titleAr,
-    required this.img,
-    required this.cover,
+    required this.typeId,
+    required this.brandId,
+    required this.bodyId,
+    required this.slug,
+    required this.slugGroup,
+    required this.model,
+    required this.year,
+    required this.innerColor,
+    required this.outerColor,
+    required this.seats,
+    required this.oldDailyPrice,
+    required this.dailyPrice,
+    required this.oldHourlyPrice,
+    required this.hourlyPrice,
     required this.descriptionEn,
     required this.descriptionAr,
-    required this.slug,
-    required this.orderNum,
+    required this.imgs,
     required this.metaTitleEn,
     required this.metaTitleAr,
     required this.metaKeywordsEn,
@@ -72,15 +80,23 @@ class BrandInfo {
   });
 
   int id;
-  String name;
-  String titleEn;
-  String titleAr;
-  String img;
-  String cover;
+  int typeId;
+  int brandId;
+  int bodyId;
+  String slug;
+  String slugGroup;
+  String model;
+  int year;
+  String innerColor;
+  String outerColor;
+  int seats;
+  int oldDailyPrice;
+  int dailyPrice;
+  int oldHourlyPrice;
+  int hourlyPrice;
   String descriptionEn;
   String descriptionAr;
-  String slug;
-  int orderNum;
+  String imgs;
   String metaTitleEn;
   String metaTitleAr;
   String metaKeywordsEn;
@@ -96,15 +112,23 @@ class BrandInfo {
 
   factory BrandInfo.fromMap(Map<String, dynamic> json) => BrandInfo(
     id: json["id"] == null ? -1 : json["id"],
-    name: json["name"] == null ? "" : json["name"],
-    titleEn: json["title_en"] == null ? "" : json["title_en"],
-    titleAr: json["title_ar"] == null ? "" : json["title_ar"],
-    img: json["img"] == null ? "" : json["img"],
-    cover: json["cover"] == null ? "" : json["cover"],
+    typeId: json["type_id"] == null ? -1 : json["type_id"],
+    brandId: json["brand_id"] == null ? -1 : json["brand_id"],
+    bodyId: json["body_id"] == null ? -1 : json["body_id"],
+    slug: json["slug"] == null ? "" : json["slug"],
+    slugGroup: json["slug_group"] == null ? "" : json["slug_group"],
+    model: json["model"] == null ? "" : json["model"],
+    year: json["year"] == null ? -1 : json["year"],
+    innerColor: json["inner_color"] == null ? "" : json["inner_color"],
+    outerColor: json["outer_color"] == null ? "" : json["outer_color"],
+    seats: json["seats"] == null ? -1 : json["seats"],
+    oldDailyPrice: json["old_daily_price"] == null ? -1 : json["old_daily_price"],
+    dailyPrice: json["daily_price"] == null ? -1 : json["daily_price"],
+    oldHourlyPrice: json["old_hourly_price"] == null ? -1 : json["old_hourly_price"],
+    hourlyPrice: json["hourly_price"] == null ? -1 : json["hourly_price"],
     descriptionEn: json["description_en"] == null ? "" : json["description_en"],
     descriptionAr: json["description_ar"] == null ? "" : json["description_ar"],
-    slug: json["slug"] == null ? "" : json["slug"],
-    orderNum: json["order_num"] == null ? -1 : json["order_num"],
+    imgs: json["imgs"] == null ? "" : json["imgs"],
     metaTitleEn: json["meta_title_en"] == null ? "" : json["meta_title_en"],
     metaTitleAr: json["meta_title_ar"] == null ? "" : json["meta_title_ar"],
     metaKeywordsEn: json["meta_keywords_en"] == null ? "" : json["meta_keywords_en"],
@@ -117,21 +141,29 @@ class BrandInfo {
 
   Map<String, dynamic> toMap() => {
     "id": id == null ? null : id,
-    "name": name == null ? null : name,
-    "title_en": titleEn == null ? null : titleEn,
-    "title_ar": titleAr == null ? null : titleAr,
-    "img": img == null ? null : img,
-    "cover": cover == null ? null : cover,
+    "type_id": typeId == null ? null : typeId,
+    "brand_id": brandId == null ? null : brandId,
+    "body_id": bodyId == null ? null : bodyId,
+    "slug": slug == null ? null : slug,
+    "slug_group": slugGroup == null ? null : slugGroup,
+    "model": model == null ? null : model,
+    "year": year == null ? null : year,
+    "inner_color": innerColor == null ? null : innerColor,
+    "outer_color": outerColor == null ? null : outerColor,
+    "seats": seats == null ? null : seats,
+    "old_daily_price": oldDailyPrice == null ? null : oldDailyPrice,
+    "daily_price": dailyPrice == null ? null : dailyPrice,
+    "old_hourly_price": oldHourlyPrice == null ? null : oldHourlyPrice,
+    "hourly_price": hourlyPrice == null ? null : hourlyPrice,
     "description_en": descriptionEn == null ? null : descriptionEn,
     "description_ar": descriptionAr == null ? null : descriptionAr,
-    "slug": slug == null ? null : slug,
-    "order_num": orderNum == null ? null : orderNum,
+    "imgs": imgs == null ? null : imgs,
     "meta_title_en": metaTitleEn == null ? null : metaTitleEn,
     "meta_title_ar": metaTitleAr == null ? null : metaTitleAr,
     "meta_keywords_en": metaKeywordsEn == null ? null : metaKeywordsEn,
     "meta_keywords_ar": metaKeywordsAr == null ? null : metaKeywordsAr,
     "meta_description_en": metaDescriptionEn == null ? null : metaDescriptionEn,
-    "meta_description_ar": metaDescriptionAr == null ? null : metaDescriptionAr,
+    "meta_description_ar": metaDescriptionAr,
     "meta_image": metaImage == null ? null : metaImage,
     // "updated_at": updatedAt == null ? null : updatedAt.toIso8601String(),
   };

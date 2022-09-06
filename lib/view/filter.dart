@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:luxury_version_1/app_localization.dart';
 import 'package:luxury_version_1/controller/home_controller.dart';
 import 'package:luxury_version_1/controller/introduction_controller.dart';
 import 'package:luxury_version_1/helper/app.dart';
+import 'package:luxury_version_1/helper/global.dart';
 import 'package:luxury_version_1/widgets/container_with_image.dart';
 import 'package:luxury_version_1/widgets/custom_button.dart';
 
@@ -16,21 +17,19 @@ class Filter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Container(
-      width: App.getDeviceWidthPercent(100, context),
-      child: Drawer(
+    return Obx(() => Scaffold(
+      body: SafeArea(
         child: Container(
           width: App.getDeviceWidthPercent(100, context),
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/images/nav-bg.webp",),
+                  image: AssetImage("assets/images/filter-bg.webp"),
                   fit: BoxFit.cover
               )
           ),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: MediaQuery.of(context).viewPadding.top + 20),
                 ///header
                 _header(context),
                 ///Image
@@ -50,7 +49,10 @@ class Filter extends StatelessWidget {
                 ///Brands
                 _brands(context),
                 const SizedBox(height: 40),
-                _applyButton(context),
+                Container(
+                  width: App.getDeviceWidthPercent(90, context),
+                  child: _applyClearButtos(context),
+                ),
                 const SizedBox(height: 40),
               ],
             ),
@@ -69,46 +71,34 @@ class Filter extends StatelessWidget {
           GestureDetector(
             onTap: () {
               Get.back();
-              homeController.searchIcon.value = true;
-              homeController.search.clear();
             },
             child: ContainerWithImage(
                 width: 30,
                 height: 30,
-                image: "assets/icons/back-icon.svg",
+                image: Global.languageCode == "en" ?
+                "assets/icons/back-icon.svg" :
+                "assets/icons/back-icon_arabic.svg",
                 option: 0
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Get.back();
-            },
-            child: Container(
-              child: SvgPicture.asset("assets/icons/logo.svg",
-                width: 30,
-                height: 30,
-                color: Colors.transparent,
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              homeController.clearFilter();
-            },
-            child: Container(
-              child: Row(
-                children: const [
-                  Text("Clear",
-                    style: TextStyle(
-                        color: App.field,
-                        fontSize: CommonTextStyle.mediumTextStyle
-                    ),
-                  ),
-                  Icon(Icons.delete,color: App.field,size: 23,)
-                ],
-              ),
-            ),
-          )
+          // GestureDetector(
+          //   onTap: () {
+          //     homeController.clearFilter();
+          //   },
+          //   child: Container(
+          //     child: Row(
+          //       children: const [
+          //         Text("Clear",
+          //           style: TextStyle(
+          //               color: App.field,
+          //               fontSize: CommonTextStyle.mediumTextStyle
+          //           ),
+          //         ),
+          //         Icon(Icons.delete,color: App.field,size: 23,)
+          //       ],
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );
@@ -119,9 +109,11 @@ class Filter extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Rental Model",
+          Text(App_Localization.of(context).translate("rental_model"),
             style: CommonTextStyle.textStyleForLargeWhiteBold,
           ),
+          const SizedBox(height: 20),
+          _applyClearButtos(context),
           const SizedBox(height: 20),
           Row(
             children: [
@@ -151,7 +143,7 @@ class Filter extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Text("Per Day",
+                  Text(App_Localization.of(context).translate("per_day"),
                     style: CommonTextStyle.textStyleForMediumWhiteNormal,
                   ),
                 ],
@@ -183,13 +175,13 @@ class Filter extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Text("Per Hour",
+                  Text(App_Localization.of(context).translate("per_hour"),
                     style: CommonTextStyle.textStyleForMediumWhiteNormal,
                   ),
                 ],
               ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -244,7 +236,7 @@ class Filter extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Brands",
+          Text(App_Localization.of(context).translate("brands").toUpperCase(),
             style: CommonTextStyle.textStyleForLargeWhiteBold,
           ),
           Container(
@@ -290,17 +282,57 @@ class Filter extends StatelessWidget {
       ),
     );
   }
-  _applyButton(BuildContext context) {
-    return CustomButton(
-      width: App.getDeviceWidthPercent(80, context),
-      height: 50,
-      text: "Apply",
-      onPressed: () {
-        ///apply
-      },
-      color: App.orange,
-      borderRadius: 20,
-      textStyle: CommonTextStyle.textStyleForBigWhiteNormal,
+  _applyClearButtos(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 5, bottom: 5),
+          child: Center(
+            child: Container(
+              height: 50,
+              width: App.getDeviceWidthPercent(40, context),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: App.grey,
+                  onPrimary:  App.grey,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                child: FittedBox(
+                    child: Row(
+                      children: [
+                        Icon(Icons.delete,color: App.orange),
+                        Text(App_Localization.of(context).translate("clear"),
+                            style: TextStyle(
+                                fontSize: CommonTextStyle.bigTextStyle,
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal
+                            )
+                        ),
+                      ],
+                    )
+                ),
+                onPressed: () {
+                  homeController.clearFilter();
+                },
+              ),
+            ),
+          ),
+        ),
+        CustomButton(
+          width: App.getDeviceWidthPercent(40, context),
+          height: 50,
+          text: App_Localization.of(context).translate("apply"),
+          onPressed: () {
+            ///apply
+          },
+          color: App.orange,
+          borderRadius: 20,
+          textStyle: CommonTextStyle.textStyleForBigWhiteNormal,
+        ),
+      ],
     );
   }
 }
