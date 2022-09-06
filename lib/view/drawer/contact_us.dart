@@ -45,7 +45,8 @@ class ContactUs extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          header(context),
+          SizedBox(height: 70),
+          // header(context),
           SizedBox(height: 15),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

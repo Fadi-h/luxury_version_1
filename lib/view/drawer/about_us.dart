@@ -43,7 +43,8 @@ class AboutUs extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          header(context),
+          // header(context),
+          SizedBox(height: 70),
           body(context),
           SizedBox(height: 20),
           Footer(introductionController: introductionController)

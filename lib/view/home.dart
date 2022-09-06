@@ -135,7 +135,6 @@ class Home extends StatelessWidget {
         SingleChildScrollView(
           child: Column(
             children: [
-
               const SizedBox(height: 85),
               GestureDetector(
                 onTap: () {

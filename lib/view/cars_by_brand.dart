@@ -32,29 +32,30 @@ class CarsByBrand extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            width: App.getDeviceWidthPercent(100, context),
-            height: App.getDeviceHeightPercent(100, context),
-            color: App.darkGrey,
-          ),
-          Container(
-            width: App.getDeviceWidthPercent(100, context),
-            height: App.getDeviceHeightPercent(100, context),
-            color: App.darkGrey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: MediaQuery.of(context).viewPadding.top,),
-                  _header(context),
-                  SizedBox(height: 20),
-                  Container(
-                    width: App.getDeviceWidthPercent(90, context),
-                    child: Text(
-                      Global.languageCode == "en" ?
-                     introductionController.homeData!.data!.brands[index].titleEn :
-                      introductionController.homeData!.data!.brands[index].titleAr ,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              width: App.getDeviceWidthPercent(100, context),
+              height: App.getDeviceHeightPercent(100, context),
+              color: App.darkGrey,
+            ),
+            Container(
+              width: App.getDeviceWidthPercent(100, context),
+              height: App.getDeviceHeightPercent(100, context),
+              color: App.darkGrey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // SizedBox(height: MediaQuery.of(context).viewPadding.top,),
+                    _header(context),
+                    SizedBox(height: 20),
+                    Container(
+                      width: App.getDeviceWidthPercent(90, context),
+                      child: Text(
+                        Global.languageCode == "en" ?
+                        introductionController.homeData!.data!.brands[index].titleEn :
+                        introductionController.homeData!.data!.brands[index].titleAr ,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           letterSpacing: 1,
@@ -62,16 +63,17 @@ class CarsByBrand extends StatelessWidget {
                           fontSize: CommonTextStyle.xXlargeTextStyle,
                           color: App.orange,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                    ),
-                  ),
-                  products(context,index),
-                  SizedBox(height: 30),
-                ],
+                    products(context,index),
+                    SizedBox(height: 30),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       )
     );
   }

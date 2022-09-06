@@ -51,7 +51,8 @@ class Blog extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          header(context),
+          // header(context),
+          SizedBox(height: 70),
           SizedBox(height: 15),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
