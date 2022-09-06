@@ -81,24 +81,6 @@ class Filter extends StatelessWidget {
                 option: 0
             ),
           ),
-          // GestureDetector(
-          //   onTap: () {
-          //     homeController.clearFilter();
-          //   },
-          //   child: Container(
-          //     child: Row(
-          //       children: const [
-          //         Text("Clear",
-          //           style: TextStyle(
-          //               color: App.field,
-          //               fontSize: CommonTextStyle.mediumTextStyle
-          //           ),
-          //         ),
-          //         Icon(Icons.delete,color: App.field,size: 23,)
-          //       ],
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );
@@ -239,53 +221,61 @@ class Filter extends StatelessWidget {
           Text(App_Localization.of(context).translate("brands").toUpperCase(),
             style: CommonTextStyle.textStyleForLargeWhiteBold,
           ),
-          Wrap(
-            alignment: WrapAlignment.spaceBetween,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: 10,
-            runSpacing: 10,
-            children: introductionController.homeData!.data!.brands.map((e) =>
-                Container(
-                  width: 100,
-                  height: 30,
-                  child: GestureDetector(
-                    onTap: (){
-                      ///select multi items
-                      print(e.selected.value);
-                      if(e.id == -1){
-                        e.selected.value = true;
-                        homeController.selectedBrands.clear();
-                        for(int i=1 ; i< introductionController.homeData!.data!.brands.length;i++){
-                          introductionController.homeData!.data!.brands[i].selected.value = false;
-                        }
-                      }else{
-                        introductionController.homeData!.data!.brands.first.selected.value = false;
-                        if(e.selected.value){
-                          homeController.selectedBrands.remove(e.id);
-                          e.selected.value = false;
-                        }else{
-                          homeController.selectedBrands.add(e.id);
+          const SizedBox(height: 20),
+          Container(
+            width: App.getDeviceWidthPercent(90, context),
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 10,
+              runSpacing: 10,
+              children: introductionController.homeData!.data!.brands.map((e) =>
+                  Container(
+                    width: 100,
+                    height: 30,
+                    child: GestureDetector(
+                      onTap: (){
+                        ///select multi items
+                        print(e.selected.value);
+                        if(e.id == -1){
                           e.selected.value = true;
+                          homeController.selectedBrands.clear();
+                          for(int i=1 ; i< introductionController.homeData!.data!.brands.length;i++){
+                            introductionController.homeData!.data!.brands[i].selected.value = false;
+                          }
+                        }else{
+                          introductionController.homeData!.data!.brands.first.selected.value = false;
+                          if(e.selected.value){
+                            homeController.selectedBrands.remove(e.id);
+                            e.selected.value = false;
+                          }else{
+                            homeController.selectedBrands.add(e.id);
+                            e.selected.value = true;
+                          }
                         }
-                      }
-                      print(List<int>.from(homeController.selectedBrands.map((x) => x)).toString());
-                    },
-                    child: Obx(() => Container(
-                      padding: EdgeInsets.symmetric(horizontal: 6),
-                      decoration: BoxDecoration(
-                        color: e.selected.value?Colors.white:App.grey,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: Center(
-                        child: Text(
-                            e.name,textAlign: TextAlign.center,
-                            style: CommonTextStyle.textStyleForSmallWhiteHalfBold
+                        print(List<int>.from(homeController.selectedBrands.map((x) => x)).toString());
+                      },
+                      child: Obx(() => Container(
+                        padding: EdgeInsets.symmetric(horizontal: 6),
+                        decoration: BoxDecoration(
+                          color: e.selected.value?Colors.white:App.grey,
+                          borderRadius: BorderRadius.circular(25),
                         ),
-                      ),
-                    )),
-                  ),
-                )
-            ).toList(),
+                        child: Center(
+                          child: Text(
+                              e.name,textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: smallTextStyle,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500
+                              )
+                          ),
+                        ),
+                      )),
+                    ),
+                  )
+              ).toList(),
+            ),
           )
         ],
       ),
