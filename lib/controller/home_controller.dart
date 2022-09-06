@@ -27,6 +27,7 @@ class HomeController extends GetxController {
 
   clearFilter(){
     selectRentalModel = 0.obs;
+    selectedBrands.clear();
     minPrice.value = 0.0;
     maxPrice.value = 2200.00;
     price.value = const RangeValues(0, 2200);
