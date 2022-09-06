@@ -86,17 +86,18 @@ class API {
     }
   }
 
-  static Future<AllCars?> filter(String vehicleType,String rentType,String minPrice,String maxPrice,List<BrandInfo> brand,String carBody)async{
+  static Future<AllCars?> filter(String vehicleType,String rentType,String minPrice,String maxPrice,List<int> brand,String carBody)async{
     var headers = {
       'accept-language': 'en'
     };
+    print(List<int>.from(brand.map((x) => x)).toString());
     var request = http.MultipartRequest('POST', Uri.parse(url + '/api/filter'));
     request.fields.addAll({
       'vehicle_type': vehicleType,
       'rent_type': rentType,
       'min_price': minPrice,
       'max_price': maxPrice,
-      'brands': List<dynamic>.from(brand.map((x) => x.toMap())).toString(),
+      'brands': List<int>.from(brand.map((x) => x)).toString(),
       'car_body': carBody,
     });
     request.headers.addAll(headers);

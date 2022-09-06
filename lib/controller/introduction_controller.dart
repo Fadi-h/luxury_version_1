@@ -48,6 +48,8 @@ class IntroductionController extends GetxController{
              allCars = await API.getAllCars();
              allCarsConst = await API.getAllCars();
              homeData = value;
+             homeData!.data!.brands.insert(0,Brand(id: -1, name: "ALL", titleEn: "ALL", titleAr: "جميع", img: "", cover: "", descriptionEn: "", descriptionAr: "", slug: "all", orderNum: -1,
+                     metaTitleEn: "", metaTitleAr: "", metaKeywordsEn: "", metaKeywordsAr: "", metaDescriptionEn: "", metaDescriptionAr: "", metaImage: ""));
              Get.offAll(() => Home(homeData!));
            }
          });
@@ -141,5 +143,21 @@ class IntroductionController extends GetxController{
         App.errorTopBar(context, "This brand has no cars");
       }
     });
+  }
+
+  filterProduct(int vehicleType,int rentType,double minPrice,double maxPrice ,List<int> brands){
+    loading.value = true;
+    API.filter(vehicleType.toString(), rentType.toString(), minPrice.toString(), maxPrice.toString(), brands, "0").then((value) {
+      loading.value = false;
+      allCars = value;
+      Get.back();
+    });
+  }
+  clearFilter(){
+    allCars =allCarsConst;
+    loading.value = true;
+    homeController.selectCategory.value = 0;
+    loading.value = false;
+    Get.back();
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 class HomeData {
   HomeData({
     required this.code,
@@ -55,16 +57,21 @@ class Data {
   String toJson() => json.encode(toMap());
 
 
-  factory Data.fromMap(Map<String, dynamic> json) => Data(
-    maxPriceDaily: json["max-price-daily"] == null ? -1 : json["max-price-daily"],
-    maxPriceHourly: json["max-price-hourly"] == null ? -1 : json["max-price-hourly"],
-    carBody: List<CarBody>.from(json["car-body"].map((x) => CarBody.fromJson(x))),
-    carType: List<CarBody>.from(json["car-type"].map((x) => CarBody.fromJson(x))),
-    cars: Cars.fromJson(json["cars"]),
-    brands: List<Brand>.from(json["brands"].map((x) => Brand.fromJson(x))),
-    social: List<Social>.from(json["social"].map((x) => Social.fromJson(x))),
-    contact: List<Contact>.from(json["contact"].map((x) => Contact.fromJson(x))),
-  );
+  factory Data.fromMap(Map<String, dynamic> json) {
+   Data data = Data(
+      maxPriceDaily: json["max-price-daily"] == null ? -1 : json["max-price-daily"],
+      maxPriceHourly: json["max-price-hourly"] == null ? -1 : json["max-price-hourly"],
+      carBody: List<CarBody>.from(json["car-body"].map((x) => CarBody.fromJson(x))),
+      carType: List<CarBody>.from(json["car-type"].map((x) => CarBody.fromJson(x))),
+      cars: Cars.fromJson(json["cars"]),
+      brands: List<Brand>.from(json["brands"].map((x) => Brand.fromJson(x))),
+      social: List<Social>.from(json["social"].map((x) => Social.fromJson(x))),
+      contact: List<Contact>.from(json["contact"].map((x) => Contact.fromJson(x))),
+    );
+   // this.brands.add(Brand(id: -1, name: "ALL", titleEn: "ALL", titleAr: "جميع", img: "", cover: "", descriptionEn: "", descriptionAr: "", slug: "all", orderNum: -1,
+   //     metaTitleEn: "", metaTitleAr: "", metaKeywordsEn: "", metaKeywordsAr: "", metaDescriptionEn: "", metaDescriptionAr: "", metaImage: ""));
+   return data;
+  }
 
   Map<String, dynamic> toMap() => {
     "max-price-daily": maxPriceDaily == null ? null : maxPriceDaily,
@@ -117,6 +124,7 @@ class Brand {
   String metaDescriptionEn;
   String metaDescriptionAr;
   String metaImage;
+  Rx<bool> selected = false.obs;
   // DateTime updatedAt;
 
   factory Brand.fromJson(Map<String, dynamic> json) => Brand(

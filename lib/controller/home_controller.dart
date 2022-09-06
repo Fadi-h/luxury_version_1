@@ -22,6 +22,7 @@ class HomeController extends GetxController {
   RxInt selectRentalModel = 0.obs;
   Rx<RangeLabels> priceLabel = const RangeLabels("AED 0", "AED 2200").obs;
   Rx<double> minPrice= 0.0.obs, maxPrice= 99999999999999999999.0.obs;
+  List<int> selectedBrands = <int>[];
   Rx<RangeValues> price = const RangeValues(0, 2200).obs;
 
   clearFilter(){
@@ -30,6 +31,7 @@ class HomeController extends GetxController {
     maxPrice.value = 2200.00;
     price.value = const RangeValues(0, 2200);
     priceLabel.value = const RangeLabels("AED 0", "AED 2200");
+
   }
 
   void openMap() async {
@@ -39,6 +41,8 @@ class HomeController extends GetxController {
   setIndex(int selected){
     activeIndex.value=selected;
   }
+
+
 
 
 }

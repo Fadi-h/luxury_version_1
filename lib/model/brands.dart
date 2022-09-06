@@ -9,7 +9,7 @@ class AllBrands {
 
   int code;
   String message;
-  Brand brand;
+  MyBrand brand;
 
   factory AllBrands.fromJson(String str) => AllBrands.fromMap(json.decode(str));
 
@@ -18,7 +18,7 @@ class AllBrands {
   factory AllBrands.fromMap(Map<String, dynamic> json) => AllBrands(
     code: json["code"] == null ? -1 : json["code"],
     message: json["message"] == null ? "" : json["message"],
-    brand: Brand.fromMap(json["data"]),
+    brand: MyBrand.fromMap(json["data"]),
   );
 
   Map<String, dynamic> toMap() => {
@@ -28,19 +28,19 @@ class AllBrands {
   };
 }
 
-class Brand {
-  Brand({
+class MyBrand {
+  MyBrand({
     required this.brands,
   });
 
   List<BrandInfo>? brands;
 
 
-  factory Brand.fromJson(String str) => Brand.fromMap(json.decode(str));
+  factory MyBrand.fromJson(String str) => MyBrand.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory Brand.fromMap(Map<String, dynamic> json) => Brand(
+  factory MyBrand.fromMap(Map<String, dynamic> json) => MyBrand(
     brands: json["brands"] == null ? null : List<BrandInfo>.from(json["brands"].map((x) => BrandInfo.fromMap(x))),
   );
 

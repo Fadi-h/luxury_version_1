@@ -239,44 +239,53 @@ class Filter extends StatelessWidget {
           Text(App_Localization.of(context).translate("brands").toUpperCase(),
             style: CommonTextStyle.textStyleForLargeWhiteBold,
           ),
-          Container(
-            width: App.getDeviceWidthPercent(95, context),
-            child: GridView.builder(
-              padding: EdgeInsets.only(top: 20),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 3,
-                  mainAxisSpacing: 15,
-                  crossAxisSpacing: 5
-              ),
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: introductionController.homeData!.data!.brands.length,
-              itemBuilder: (context, index){
-                return Row(
-                  children: [
-                    GestureDetector(
-                      onTap: (){
-                        ///select multi items
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 6),
-                        decoration: BoxDecoration(
-                          color: App.grey,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        child: Center(
-                          child: Text(
-                              introductionController.homeData!.data!.brands[index].name,textAlign: TextAlign.center,
-                              style: CommonTextStyle.textStyleForSmallWhiteHalfBold
-                          ),
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 10,
+            runSpacing: 10,
+            children: introductionController.homeData!.data!.brands.map((e) =>
+                Container(
+                  width: 100,
+                  height: 30,
+                  child: GestureDetector(
+                    onTap: (){
+                      ///select multi items
+                      print(e.selected.value);
+                      if(e.id == -1){
+                        e.selected.value = true;
+                        homeController.selectedBrands.clear();
+                        for(int i=1 ; i< introductionController.homeData!.data!.brands.length;i++){
+                          introductionController.homeData!.data!.brands[i].selected.value = false;
+                        }
+                      }else{
+                        introductionController.homeData!.data!.brands.first.selected.value = false;
+                        if(e.selected.value){
+                          homeController.selectedBrands.remove(e.id);
+                          e.selected.value = false;
+                        }else{
+                          homeController.selectedBrands.add(e.id);
+                          e.selected.value = true;
+                        }
+                      }
+                      print(List<int>.from(homeController.selectedBrands.map((x) => x)).toString());
+                    },
+                    child: Obx(() => Container(
+                      padding: EdgeInsets.symmetric(horizontal: 6),
+                      decoration: BoxDecoration(
+                        color: e.selected.value?Colors.white:App.grey,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Center(
+                        child: Text(
+                            e.name,textAlign: TextAlign.center,
+                            style: CommonTextStyle.textStyleForSmallWhiteHalfBold
                         ),
                       ),
-                    ),
-                  ],
-                );
-              },
-            ),
+                    )),
+                  ),
+                )
+            ).toList(),
           )
         ],
       ),
@@ -316,6 +325,7 @@ class Filter extends StatelessWidget {
                 ),
                 onPressed: () {
                   homeController.clearFilter();
+                  introductionController.clearFilter();
                 },
               ),
             ),
@@ -327,6 +337,8 @@ class Filter extends StatelessWidget {
           text: App_Localization.of(context).translate("apply"),
           onPressed: () {
             ///apply
+            introductionController.filterProduct(3,homeController.selectRentalModel.value,
+                homeController.minPrice.value,homeController.maxPrice.value,homeController.selectedBrands);
           },
           color: App.orange,
           borderRadius: 20,
